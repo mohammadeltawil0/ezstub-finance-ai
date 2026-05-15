@@ -11,28 +11,31 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String firstName;
+
+    private String lastName;
 
     @Column(unique = true, nullable = false)
     private String email;
 
-    private String passwordHash;
-
-    private LocalDateTime createdAt = LocalDateTime.now();
-
-    // relationships
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Transaction> transactions;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Income> incomes;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Budget> budgets;
+    private String password;
+//
+//    private LocalDateTime createdAt = LocalDateTime.now();
+//
+//    // relationships
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+//    private List<Transaction> transactions;
+//
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+//    private List<Income> incomes;
+//
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+//    private List<Budget> budgets;
 }
