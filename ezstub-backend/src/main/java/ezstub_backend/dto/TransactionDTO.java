@@ -1,10 +1,10 @@
 package ezstub_backend.dto;
 
+import ezstub_backend.model.enums.ExpenseCategory;
+import ezstub_backend.model.enums.IncomeCategory;
 import ezstub_backend.model.enums.TransactionSource;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import ezstub_backend.model.enums.TransactionType;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -12,11 +12,18 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class TransactionDTO {
 
+    private Long id;
+    private String merchant;
     private Double amount;
-    private String category;
-    private String description;
-    private LocalDate date;
+    private LocalDate transactionDate;
+    private TransactionType type;
+    private ExpenseCategory expenseCategory;
+    private IncomeCategory incomeCategory;
     private TransactionSource source;
+    private String description;
+    private Long userId;
+
 }

@@ -20,18 +20,29 @@ public class TransactionController {
 
     @PostMapping
     public TransactionDTO createTransaction(@RequestBody TransactionDTO dto) {
-        Transaction t = TransactionMapper.toEntity(dto);
-        Transaction saved = transactionService.save(t);
+        return transactionService.save(dto);
+    }
 
-        return TransactionMapper.toDTO(saved);
-
+    @GetMapping("/{id}")
+    public TransactionDTO getTransactionById(@PathVariable Long id) {
+        return transactionService.getById(id);
     }
 
     @GetMapping("/user/{userId}")
     public List<TransactionDTO> getTransactions(@PathVariable Long userId) {
-        return transactionService.getByUserId(userId)
-                .stream()
-                .map(TransactionMapper::toDTO)
-                .collect(Collectors.toList());
+        return transactionService.getByUserId(userId);
+    }
+
+    @PutMapping("/{id}")
+    public TransactionDTO updateTransaction(
+            @PathVariable Long id,
+            @RequestBody TransactionDTO dto
+    ) {
+        return transactionService.update(id, dto);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteTransaction(@PathVariable Long id) {
+        transactionService.delete(id);
     }
 }

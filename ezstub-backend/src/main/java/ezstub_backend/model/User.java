@@ -2,8 +2,8 @@ package ezstub_backend.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import java.time.LocalDateTime;
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "users")
@@ -26,16 +26,11 @@ public class User {
     private String email;
 
     private String password;
-//
-//    private LocalDateTime createdAt = LocalDateTime.now();
-//
-//    // relationships
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-//    private List<Transaction> transactions;
-//
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-//    private List<Income> incomes;
-//
-//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-//    private List<Budget> budgets;
+
+    // Relationships
+
+    // A user can have many transactions
+    @JsonIgnore
+    @OneToMany(mappedBy = "user")
+    private List<Transaction> transactions;
 }

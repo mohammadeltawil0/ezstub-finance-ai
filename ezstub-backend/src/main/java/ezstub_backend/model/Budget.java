@@ -1,5 +1,6 @@
 package ezstub_backend.model;
 
+import ezstub_backend.model.enums.ExpenseCategory;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,13 +10,15 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Budget {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String category; // Food, Travel, etc.
+    @Enumerated(EnumType.STRING)
+    private ExpenseCategory category; // Food, Travel, etc.
 
     private Double limitAmount;
 

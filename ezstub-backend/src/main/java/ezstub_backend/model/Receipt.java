@@ -26,6 +26,8 @@ public class Receipt {
     private String parsedJson;
     // raw output from Python OCR service
 
+    private Boolean processed = false;
+
     private LocalDateTime uploadedAt = LocalDateTime.now();
 
     @ManyToOne

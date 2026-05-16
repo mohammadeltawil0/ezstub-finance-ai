@@ -40,6 +40,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public UserDTO updateUser(Long id, UserDTO userDTO) {
+
+        User existingUser = userRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+
+        existingUser.setFirstName(userDTO.getFirstName());
+        existingUser.setLastName(userDTO.getLastName());
+        existingUser.setEmail(userDTO.getEmail());
+
+        User updatedUser = userRepository.save(existingUser);
+
+        return UserMapper.toDTO(updatedUser);
+    }
+
+    @Override
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }

@@ -1,5 +1,6 @@
 package ezstub_backend.service;
 
+import ezstub_backend.dto.TransactionDTO;
 import ezstub_backend.model.Transaction;
 import ezstub_backend.repository.TransactionRepository;
 import org.springframework.stereotype.Service;
@@ -7,21 +8,15 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class TransactionService {
+public interface TransactionService {
 
-    private final TransactionRepository transactionRepository;
+    TransactionDTO save(TransactionDTO dto);
 
-    public TransactionService(TransactionRepository transactionRepository) {
-        this.transactionRepository = transactionRepository;
-    }
+    List<TransactionDTO> getByUserId(Long userId);
 
-    public Transaction save(Transaction transaction) {
+    TransactionDTO getById(Long id);
 
-        return transactionRepository.save(transaction);
-    }
+    TransactionDTO update(Long id, TransactionDTO dto);
 
-    public List<Transaction> getByUserId(Long userId) {
-
-        return transactionRepository.findByUserId(userId);
-    }
+    void delete(Long id);
 }
