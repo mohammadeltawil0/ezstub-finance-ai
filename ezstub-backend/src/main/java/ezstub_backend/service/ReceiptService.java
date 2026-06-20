@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ReceiptService {
 
-    ReceiptDTO uploadReceipt(Long userId, MultipartFile multipartFile);
+//    ReceiptDTO uploadReceipt(Long userId, MultipartFile multipartFile);
 
     List<ReceiptDTO> getReceiptByUser(Long userId);
 

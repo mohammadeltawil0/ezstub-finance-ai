@@ -2,16 +2,19 @@ package ezstub_backend.model;
 
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
+@Data
 @Table(name = "receipts")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Receipt {
+public class Receipt{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +24,7 @@ public class Receipt {
 
     private String merchant;
 
-    private Double totalAmount;
+    private BigDecimal totalAmount;
 
     @Lob
     private String parsedJson;

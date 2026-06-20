@@ -6,6 +6,7 @@ import ezstub_backend.model.enums.TransactionSource;
 import ezstub_backend.model.enums.TransactionType;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Getter
@@ -17,7 +18,7 @@ public class TransactionDTO {
 
     private Long id;
     private String merchant;
-    private Double amount;
+    private BigDecimal amount;
     private LocalDate transactionDate;
     private TransactionType type;
     private ExpenseCategory expenseCategory;

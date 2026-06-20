@@ -17,10 +17,10 @@ public class ReceiptController {
         this.receiptService = receiptService;
     }
 
-    @PostMapping("/upload/{userId}")
-    public ReceiptDTO uploadReceipt(@PathVariable Long userId, @RequestParam("file") MultipartFile file) {
-        return receiptService.uploadReceipt(userId, file);
-    }
+//    @PostMapping("/upload/{userId}")
+//    public ReceiptDTO uploadReceipt(@PathVariable Long userId, @RequestParam("file") MultipartFile file) {
+//        return receiptService.uploadReceipt(userId, file);
+//    }
 
     @GetMapping("/user/{userId}")
     public List<ReceiptDTO> getReceipts(@PathVariable Long userId) {

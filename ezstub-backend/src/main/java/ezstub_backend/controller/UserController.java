@@ -3,6 +3,7 @@ package ezstub_backend.controller;
 import ezstub_backend.dto.UserDTO;
 import ezstub_backend.model.User;
 import ezstub_backend.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public class UserController {
     }
 
     @PostMapping
-    public UserDTO createUser(@RequestBody UserDTO userDTO) {
+    public UserDTO createUser(@Valid @RequestBody UserDTO userDTO) {
         return userService.createUser(userDTO);
     }
 
@@ -28,20 +29,20 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public UserDTO getUserById(@PathVariable Long id) {
+    public UserDTO getUserById(@Valid @PathVariable Long id) {
         return userService.getUserById(id);
     }
 
     @PutMapping("/{id}")
     public UserDTO updateUser(
-            @PathVariable Long id,
-            @RequestBody UserDTO userDTO
+            @Valid @PathVariable Long id,
+            @Valid @RequestBody UserDTO userDTO
     ) {
         return userService.updateUser(id, userDTO);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteUser(@PathVariable Long id) {
+    public void deleteUser(@Valid @PathVariable Long id) {
         userService.deleteUser(id);
     }
 }

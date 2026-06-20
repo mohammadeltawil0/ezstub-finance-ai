@@ -6,16 +6,19 @@ import ezstub_backend.model.enums.TransactionSource;
 import ezstub_backend.model.enums.TransactionType;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Entity
+@Data
 @Table(name = "transactions")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Transaction {
+public class Transaction{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +26,7 @@ public class Transaction {
 
     private String merchant;
 
-    private Double amount;
+    private BigDecimal amount;
 
     private LocalDate transactionDate;
 

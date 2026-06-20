@@ -4,14 +4,17 @@ import ezstub_backend.model.enums.ExpenseCategory;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Entity
+@Data
 @Table(name = "budgets")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Budget {
+public class Budget extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,7 +23,7 @@ public class Budget {
     @Enumerated(EnumType.STRING)
     private ExpenseCategory category; // Food, Travel, etc.
 
-    private Double limitAmount;
+    private BigDecimal limitAmount;
 
     private String month; // "2026-05"
 

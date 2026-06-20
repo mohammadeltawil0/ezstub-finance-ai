@@ -9,6 +9,7 @@ import ezstub_backend.service.AnalyticsService;
 import ezstub_backend.service.BudgetService;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,22 +27,22 @@ public class AnalyticsServiceImpl implements AnalyticsService {
     }
 
     @Override
-    public Map<String, Double> getTotalSpending(Long userId, String month) {
+    public Map<String, BigDecimal> getTotalSpending(Long userId, String month) {
 
-        double total = transactionRepository.findByUserId(userId)
+        BigDecimal total = transactionRepository.findByUserId(userId)
                 .stream()
                 .filter(t -> t.getType() == TransactionType.EXPENSE)
                 .filter(t -> t.getTransactionDate().toString().startsWith(month))
-                .mapToDouble(Transaction::getAmount)
-                .sum();
+                .map(Transaction::getAmount)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
 
         return Map.of("totalSpending", total);
     }
 
     @Override
-    public Map<String, Double> getSpendingByCategory(Long userId, String month) {
+    public Map<String, BigDecimal> getSpendingByCategory(Long userId, String month) {
 
-        Map<String, Double> result = new HashMap<>();
+        Map<String, BigDecimal> result = new HashMap<>();
 
         transactionRepository.findByUserId(userId)
                 .stream()
@@ -49,7 +50,9 @@ public class AnalyticsServiceImpl implements AnalyticsService {
                 .filter(t -> t.getTransactionDate().toString().startsWith(month))
                 .forEach(t -> {
                     String category = t.getExpenseCategory().name();
-                    result.put(category, result.getOrDefault(category, 0.0) + t.getAmount());
+                    BigDecimal current = result.getOrDefault(category, BigDecimal.ZERO);
+                    result.put(category, current.add(t.getAmount()));
+
                 });
         return result;
     }
@@ -57,21 +60,19 @@ public class AnalyticsServiceImpl implements AnalyticsService {
     @Override
     public Map<String, Object> getBudgetSummary(Long userId, String month) {
 
-        Map<String, Double> spentByCategory = getSpendingByCategory(userId, month);
+        Map<String, BigDecimal> spentByCategory = getSpendingByCategory(userId, month);
 
         List<Budget> budgets = budgetRepository.findByUserIdAndMonth(userId, month);
 
         List<Map<String, Object>> summary = new ArrayList<>();
 
         for (Budget b : budgets) {
-            double spent = spentByCategory.getOrDefault(b.getCategory().name(), 0.0);
-
+            BigDecimal spent = spentByCategory.getOrDefault(b.getCategory().name(), BigDecimal.ZERO);
             Map<String, Object> item = new HashMap<>();
             item.put("category", b.getCategory().name());
             item.put("budgetLimit", b.getLimitAmount());
             item.put("spent", spent);
-            item.put("remaining", b.getLimitAmount() - spent);
-
+            item.put("remaining", b.getLimitAmount().subtract(spent));
             summary.add(item);
         }
 
