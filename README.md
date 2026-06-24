@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="logo.png" width="200" alt="EZStub Logo">
+  <img src="EZStub_Logo.png" width="200" alt="EZStub Logo">
 </p>
 
 # EZStub
