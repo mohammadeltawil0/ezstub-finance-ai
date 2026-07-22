@@ -45,7 +45,7 @@ public class PaystubMapper {
         // Deductions
         if (dto.getDeductions() != null) {
             dto.getDeductions().forEach(d -> {
-                PaystubDeduction deduction = PaystubDeduction.builder()
+                Deduction deduction = Deduction.builder()
                         .description(d.getDescription())
                         .currentAmount(d.getCurrentAmount())
                         .ytdAmount(d.getYtdAmount())
@@ -59,7 +59,7 @@ public class PaystubMapper {
         // Earnings (rateVariations → earnings)
         if (dto.getRateVariations() != null) {
             dto.getRateVariations().forEach(e -> {
-                PaystubEarning earning = PaystubEarning.builder()
+                Earning earning = Earning.builder()
                         .description(e.getDescription())
                         .appliedRate(e.getAppliedRate())
                         .hours(e.getHours())

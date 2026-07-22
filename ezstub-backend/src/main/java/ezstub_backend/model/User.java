@@ -4,7 +4,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.*;
 import java.util.List;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Data
@@ -34,7 +33,7 @@ public class User {
     private List<Transaction> transactions;
 
     @OneToMany(mappedBy = "user")
-    private List<WorkSchedule> workSchedules;
+    private List<WorkDay> workSchedules;
 
     @OneToMany(mappedBy = "user")
     private List<Paystub> paystubs;

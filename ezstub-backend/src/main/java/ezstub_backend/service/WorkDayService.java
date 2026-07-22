@@ -4,7 +4,7 @@ import ezstub_backend.dto.WorkScheduleDTO;
 
 import java.util.List;
 
-public interface WorkScheduleService {
+public interface WorkDayService {
 
     WorkScheduleDTO createWorkSchedule(WorkScheduleDTO dto);
 

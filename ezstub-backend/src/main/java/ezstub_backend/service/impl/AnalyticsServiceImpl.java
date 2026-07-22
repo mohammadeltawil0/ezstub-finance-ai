@@ -1,12 +1,9 @@
 package ezstub_backend.service.impl;
 
 import ezstub_backend.model.Budget;
-import ezstub_backend.model.Transaction;
 import ezstub_backend.model.enums.TransactionType;
 import ezstub_backend.repository.BudgetRepository;
-import ezstub_backend.repository.TransactionRepository;
 import ezstub_backend.service.AnalyticsService;
-import ezstub_backend.service.BudgetService;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;

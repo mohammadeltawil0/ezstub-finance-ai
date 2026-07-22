@@ -4,23 +4,12 @@ package ezstub_backend.service.impl;
 import ezstub_backend.dto.ReceiptDTO;
 import ezstub_backend.mapper.ReceiptMapper;
 import ezstub_backend.model.Receipt;
-import ezstub_backend.model.Transaction;
-import ezstub_backend.model.User;
-import ezstub_backend.model.enums.ExpenseCategory;
-import ezstub_backend.model.enums.TransactionSource;
-import ezstub_backend.model.enums.TransactionType;
 import ezstub_backend.repository.ReceiptRepository;
-import ezstub_backend.repository.TransactionRepository;
 import ezstub_backend.repository.UserRepository;
 import ezstub_backend.service.ReceiptService;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
-import java.time.LocalDate;
 import java.util.List;
-import java.util.UUID;
 
 @Service
 public class ReceiptServiceImpl implements ReceiptService {

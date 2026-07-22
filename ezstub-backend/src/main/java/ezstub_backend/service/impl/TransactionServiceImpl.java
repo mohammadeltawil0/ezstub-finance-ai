@@ -2,13 +2,9 @@ package ezstub_backend.service.impl;
 
 import ezstub_backend.dto.TransactionDTO;
 import ezstub_backend.exception.InvalidTransactionException;
-import ezstub_backend.mapper.TransactionMapper;
-import ezstub_backend.model.Transaction;
 import ezstub_backend.model.User;
 import ezstub_backend.model.enums.TransactionType;
-import ezstub_backend.repository.TransactionRepository;
 import ezstub_backend.repository.UserRepository;
-import ezstub_backend.service.TransactionService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

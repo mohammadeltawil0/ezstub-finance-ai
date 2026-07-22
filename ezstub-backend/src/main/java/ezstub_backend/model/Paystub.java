@@ -65,7 +65,7 @@ public class Paystub {
             orphanRemoval = true
     )
     @Builder.Default
-    private List<PaystubDeduction> deductions = new ArrayList<>();
+    private List<Deduction> deductions = new ArrayList<>();
 
     @OneToMany(
             mappedBy = "paystub",
@@ -73,7 +73,7 @@ public class Paystub {
             orphanRemoval = true
     )
     @Builder.Default
-    private List<PaystubEarning> earnings = new ArrayList<>();
+    private List<Earning> earnings = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "user_id")

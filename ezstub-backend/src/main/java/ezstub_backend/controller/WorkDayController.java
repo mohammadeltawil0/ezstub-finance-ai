@@ -1,18 +1,18 @@
 package ezstub_backend.controller;
 
 import ezstub_backend.dto.WorkScheduleDTO;
-import ezstub_backend.service.WorkScheduleService;
+import ezstub_backend.service.WorkDayService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/work-schedules")
-public class WorkScheduleController {
+public class WorkDayController {
 
-    private final WorkScheduleService workScheduleService;
+    private final WorkDayService workScheduleService;
 
-    public WorkScheduleController(WorkScheduleService workScheduleService) {
+    public WorkDayController(WorkDayService workScheduleService) {
         this.workScheduleService = workScheduleService;
     }
 

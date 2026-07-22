@@ -1,24 +1,24 @@
 package ezstub_backend.service.impl;
 
 import ezstub_backend.dto.WorkScheduleDTO;
-import ezstub_backend.mapper.WorkScheduleMapper;
+import ezstub_backend.mapper.WorkDayMapper;
 import ezstub_backend.model.User;
-import ezstub_backend.model.WorkSchedule;
+import ezstub_backend.model.WorkDay;
 import ezstub_backend.repository.UserRepository;
-import ezstub_backend.repository.WorkScheduleRepository;
-import ezstub_backend.service.WorkScheduleService;
+import ezstub_backend.repository.WorkDayRepository;
+import ezstub_backend.service.WorkDayService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class WorkScheduleServiceImpl implements WorkScheduleService {
+public class WorkScheduleServiceImpl implements WorkDayService {
 
-    private final WorkScheduleRepository workScheduleRepository;
+    private final WorkDayRepository workScheduleRepository;
     private final UserRepository userRepository;
 
     public WorkScheduleServiceImpl(
-            WorkScheduleRepository workScheduleRepository,
+            WorkDayRepository workScheduleRepository,
             UserRepository userRepository
     ) {
         this.workScheduleRepository = workScheduleRepository;
@@ -31,13 +31,13 @@ public class WorkScheduleServiceImpl implements WorkScheduleService {
         User user = userRepository.findById(dto.getUserId())
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        WorkSchedule workSchedule =
-                WorkScheduleMapper.toEntity(dto, user);
+        WorkDay workSchedule =
+                WorkDayMapper.toEntity(dto, user);
 
-        WorkSchedule saved =
+        WorkDay saved =
                 workScheduleRepository.save(workSchedule);
 
-        return WorkScheduleMapper.toDTO(saved);
+        return WorkDayMapper.toDTO(saved);
     }
 
     @Override
@@ -45,23 +45,23 @@ public class WorkScheduleServiceImpl implements WorkScheduleService {
 
         return workScheduleRepository.findByUserId(userId)
                 .stream()
-                .map(WorkScheduleMapper::toDTO)
+                .map(WorkDayMapper::toDTO)
                 .toList();
     }
 
     @Override
     public WorkScheduleDTO getById(Long id) {
 
-        WorkSchedule workSchedule = workScheduleRepository.findById(id)
+        WorkDay workSchedule = workScheduleRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Work schedule not found"));
 
-        return WorkScheduleMapper.toDTO(workSchedule);
+        return WorkDayMapper.toDTO(workSchedule);
     }
 
     @Override
     public WorkScheduleDTO updateWorkSchedule(Long id, WorkScheduleDTO dto) {
 
-        WorkSchedule workSchedule = workScheduleRepository.findById(id)
+        WorkDay workSchedule = workScheduleRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Work schedule not found"));
 
         workSchedule.setWorkDate(dto.getWorkDate());
@@ -98,9 +98,9 @@ public class WorkScheduleServiceImpl implements WorkScheduleService {
                 dto.getEmployer()
         );
 
-        WorkSchedule updated = workScheduleRepository.save(workSchedule);
+        WorkDay updated = workScheduleRepository.save(workSchedule);
 
-        return WorkScheduleMapper.toDTO(updated);
+        return WorkDayMapper.toDTO(updated);
     }
 
     @Override

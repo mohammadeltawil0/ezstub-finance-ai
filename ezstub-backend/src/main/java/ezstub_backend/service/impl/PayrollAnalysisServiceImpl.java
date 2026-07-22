@@ -1,24 +1,17 @@
 package ezstub_backend.service.impl;
 
-import ezstub_backend.dto.PayrollAnalysisDTO;
-import ezstub_backend.model.Paystub;
-import ezstub_backend.model.WorkSchedule;
 import ezstub_backend.repository.PaystubRepository;
-import ezstub_backend.repository.WorkScheduleRepository;
+import ezstub_backend.repository.WorkDayRepository;
 import ezstub_backend.service.PayrollAnalysisService;
 import org.springframework.stereotype.Service;
-
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class PayrollAnalysisServiceImpl implements PayrollAnalysisService {
 
-    private final WorkScheduleRepository workScheduleRepository;
+    private final WorkDayRepository workScheduleRepository;
     private final PaystubRepository paystubRepository;
 
-    public PayrollAnalysisServiceImpl(WorkScheduleRepository workScheduleRepository, PaystubRepository paystubRepository) {
+    public PayrollAnalysisServiceImpl(WorkDayRepository workScheduleRepository, PaystubRepository paystubRepository) {
         this.workScheduleRepository = workScheduleRepository;
         this.paystubRepository = paystubRepository;
     }

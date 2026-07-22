@@ -2,11 +2,11 @@ package ezstub_backend.mapper;
 
 import ezstub_backend.dto.WorkScheduleDTO;
 import ezstub_backend.model.User;
-import ezstub_backend.model.WorkSchedule;
+import ezstub_backend.model.WorkDay;
 
-public class WorkScheduleMapper {
+public class WorkDayMapper {
 
-    public static WorkScheduleDTO toDTO(WorkSchedule workSchedule) {
+    public static WorkScheduleDTO toDTO(WorkDay workSchedule) {
 
         return WorkScheduleDTO.builder()
                 .id(workSchedule.getId())
@@ -27,12 +27,12 @@ public class WorkScheduleMapper {
                 .build();
     }
 
-    public static WorkSchedule toEntity(
+    public static WorkDay toEntity(
             WorkScheduleDTO dto,
             User user
     ) {
 
-        return WorkSchedule.builder()
+        return WorkDay.builder()
                 .id(dto.getId())
                 .workDate(dto.getWorkDate())
                 .startTime(dto.getStartTime())

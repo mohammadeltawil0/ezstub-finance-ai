@@ -1,20 +1,19 @@
 package ezstub_backend.model;
 
-
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
 
 @Entity
-@Table(name = "paystub_deductions")
+@Table(name = "paystub_earnings")
 @Data
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PaystubDeduction {
+public class Earning {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,10 +22,13 @@ public class PaystubDeduction {
     private String description;
 
     @Column(precision = 12, scale = 2)
-    private BigDecimal currentAmount;
+    private BigDecimal appliedRate;
 
     @Column(precision = 12, scale = 2)
-    private BigDecimal ytdAmount;
+    private BigDecimal hours;
+
+    @Column(precision = 12, scale = 2)
+    private BigDecimal earnings;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "paystub_id")
