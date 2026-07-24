@@ -16,13 +16,11 @@ public class ReceiptServiceImpl implements ReceiptService {
 
     private final ReceiptRepository receiptRepository;
     private final UserRepository userRepository;
-    private final TransactionRepository transactionRepository;
 //    private final OCRClient ocrClient;
 
-    public ReceiptServiceImpl(ReceiptRepository receiptRepository, UserRepository userRepository, TransactionRepository transactionRepository) {
+    public ReceiptServiceImpl(ReceiptRepository receiptRepository, UserRepository userRepository) {
         this.receiptRepository = receiptRepository;
         this.userRepository = userRepository;
-        this.transactionRepository = transactionRepository;
 //        this.ocrClient = ocrClient;
     }
 

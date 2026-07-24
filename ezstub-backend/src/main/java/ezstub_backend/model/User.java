@@ -30,9 +30,6 @@ public class User {
     private String password;
 
     @OneToMany(mappedBy = "user")
-    private List<Transaction> transactions;
-
-    @OneToMany(mappedBy = "user")
     private List<WorkDay> workSchedules;
 
     @OneToMany(mappedBy = "user")
