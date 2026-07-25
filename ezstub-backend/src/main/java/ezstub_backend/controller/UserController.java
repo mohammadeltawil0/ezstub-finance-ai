@@ -1,7 +1,6 @@
 package ezstub_backend.controller;
 
-import ezstub_backend.dto.UserDTO;
-import ezstub_backend.model.User;
+import ezstub_backend.payload.UserDTO;
 import ezstub_backend.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;

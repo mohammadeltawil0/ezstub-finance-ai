@@ -1,7 +1,7 @@
 package ezstub_backend;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import ezstub_backend.dto.UserDTO;
+import ezstub_backend.payload.UserDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;

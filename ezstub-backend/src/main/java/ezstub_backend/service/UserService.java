@@ -1,6 +1,6 @@
 package ezstub_backend.service;
 
-import ezstub_backend.dto.UserDTO;
+import ezstub_backend.payload.UserDTO;
 
 import java.util.List;
 

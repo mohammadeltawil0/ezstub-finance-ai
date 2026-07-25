@@ -1,7 +1,7 @@
 package ezstub_backend.controller;
 
-import ezstub_backend.dto.PaystubDTO;
-import ezstub_backend.dto.ocr.PaystubOCRResponseDTO;
+import ezstub_backend.payload.PaystubDTO;
+import ezstub_backend.payload.ocr.PaystubOCRResponseDTO;
 import ezstub_backend.service.PaystubService;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;

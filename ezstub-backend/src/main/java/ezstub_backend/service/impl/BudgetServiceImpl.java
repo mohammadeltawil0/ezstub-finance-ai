@@ -1,7 +1,6 @@
 package ezstub_backend.service.impl;
 
-import ezstub_backend.dto.BudgetDTO;
-import ezstub_backend.mapper.BudgetMapper;
+import ezstub_backend.payload.BudgetDTO;
 import ezstub_backend.model.Budget;
 import ezstub_backend.model.User;
 import ezstub_backend.repository.BudgetRepository;

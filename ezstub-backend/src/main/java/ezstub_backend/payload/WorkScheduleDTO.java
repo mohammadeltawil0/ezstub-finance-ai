@@ -1,4 +1,4 @@
-package ezstub_backend.dto;
+package ezstub_backend.payload;
 
 import ezstub_backend.model.enums.ScheduleType;
 import lombok.*;

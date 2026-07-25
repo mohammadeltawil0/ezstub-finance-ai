@@ -1,6 +1,6 @@
 package ezstub_backend.service;
 
-import ezstub_backend.dto.BudgetDTO;
+import ezstub_backend.payload.BudgetDTO;
 
 import java.util.List;
 

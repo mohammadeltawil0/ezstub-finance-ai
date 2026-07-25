@@ -1,9 +1,8 @@
 package ezstub_backend.controller;
 
-import ezstub_backend.dto.ReceiptDTO;
+import ezstub_backend.payload.ReceiptDTO;
 import ezstub_backend.service.ReceiptService;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 

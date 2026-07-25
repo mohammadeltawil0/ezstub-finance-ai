@@ -1,8 +1,6 @@
 package ezstub_backend.service;
 
-import ezstub_backend.dto.ReceiptDTO;
-import ezstub_backend.model.Receipt;
-import org.springframework.web.multipart.MultipartFile;
+import ezstub_backend.payload.ReceiptDTO;
 
 import java.util.List;
 

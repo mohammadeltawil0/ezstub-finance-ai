@@ -1,7 +1,7 @@
-package ezstub_backend.dto.ocr;
+package ezstub_backend.payload.ocr;
 
-import ezstub_backend.dto.PaystubDeductionDTO;
-import ezstub_backend.dto.PaystubEarningDTO;
+import ezstub_backend.payload.PaystubDeductionDTO;
+import ezstub_backend.payload.PaystubEarningDTO;
 import lombok.*;
 
 import java.math.BigDecimal;

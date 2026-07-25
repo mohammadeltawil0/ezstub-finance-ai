@@ -1,8 +1,7 @@
 package ezstub_backend.service.impl;
 
 //import ezstub_backend.client.OCRClient;
-import ezstub_backend.dto.ReceiptDTO;
-import ezstub_backend.mapper.ReceiptMapper;
+import ezstub_backend.payload.ReceiptDTO;
 import ezstub_backend.model.Receipt;
 import ezstub_backend.repository.ReceiptRepository;
 import ezstub_backend.repository.UserRepository;

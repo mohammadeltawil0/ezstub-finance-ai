@@ -1,4 +1,4 @@
-package ezstub_backend.dto;
+package ezstub_backend.payload;
 
 import ezstub_backend.model.enums.ExpenseCategory;
 import ezstub_backend.model.enums.IncomeCategory;

@@ -1,7 +1,7 @@
 package ezstub_backend.service;
 
-import ezstub_backend.dto.PaystubDTO;
-import ezstub_backend.dto.ocr.PaystubOCRResponseDTO;
+import ezstub_backend.payload.PaystubDTO;
+import ezstub_backend.payload.ocr.PaystubOCRResponseDTO;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;

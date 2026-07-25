@@ -1,6 +1,6 @@
 package ezstub_backend.controller;
 
-import ezstub_backend.dto.BudgetDTO;
+import ezstub_backend.payload.BudgetDTO;
 import ezstub_backend.service.BudgetService;
 import org.springframework.web.bind.annotation.*;
 

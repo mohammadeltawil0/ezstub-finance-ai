@@ -1,4 +1,4 @@
-package ezstub_backend.dto;
+package ezstub_backend.payload;
 
 
 import jakarta.validation.constraints.Email;

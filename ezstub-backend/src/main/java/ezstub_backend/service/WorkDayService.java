@@ -1,6 +1,6 @@
 package ezstub_backend.service;
 
-import ezstub_backend.dto.WorkScheduleDTO;
+import ezstub_backend.payload.WorkScheduleDTO;
 
 import java.util.List;
 

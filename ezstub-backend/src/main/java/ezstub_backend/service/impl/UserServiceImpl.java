@@ -1,7 +1,6 @@
 package ezstub_backend.service.impl;
 
-import ezstub_backend.dto.UserDTO;
-import ezstub_backend.mapper.UserMapper;
+import ezstub_backend.payload.UserDTO;
 import ezstub_backend.model.User;
 import ezstub_backend.repository.UserRepository;
 import ezstub_backend.service.UserService;

@@ -1,7 +1,7 @@
 package ezstub_backend.mapper;
 
-import ezstub_backend.dto.*;
-import ezstub_backend.dto.ocr.PaystubOCRResponseDTO;
+import ezstub_backend.payload.*;
+import ezstub_backend.payload.ocr.PaystubOCRResponseDTO;
 import ezstub_backend.model.*;
 
 import java.time.LocalDate;

@@ -1,7 +1,6 @@
 package ezstub_backend.service.impl;
 
-import ezstub_backend.dto.WorkScheduleDTO;
-import ezstub_backend.mapper.WorkDayMapper;
+import ezstub_backend.payload.WorkScheduleDTO;
 import ezstub_backend.model.User;
 import ezstub_backend.model.WorkDay;
 import ezstub_backend.repository.UserRepository;

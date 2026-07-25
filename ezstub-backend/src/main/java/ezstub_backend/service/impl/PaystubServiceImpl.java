@@ -1,8 +1,8 @@
 package ezstub_backend.service.impl;
 
 import ezstub_backend.client.PaystubClient;
-import ezstub_backend.dto.PaystubDTO;
-import ezstub_backend.dto.ocr.PaystubOCRResponseDTO;
+import ezstub_backend.payload.PaystubDTO;
+import ezstub_backend.payload.ocr.PaystubOCRResponseDTO;
 import ezstub_backend.mapper.PaystubMapper;
 import ezstub_backend.model.Paystub;
 import ezstub_backend.model.User;
@@ -14,7 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 import tools.jackson.databind.ObjectMapper;
 
 import java.io.File;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
