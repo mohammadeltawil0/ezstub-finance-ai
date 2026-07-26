@@ -11,37 +11,37 @@ import java.util.List;
 @RequestMapping("/api/users")
 public class UserController {
 
-    private final UserService userService;
-
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
-
-    @PostMapping
-    public UserDTO createUser(@Valid @RequestBody UserDTO userDTO) {
-        return userService.createUser(userDTO);
-    }
-
-    @GetMapping
-    public List<UserDTO> getAllUsers() {
-        return userService.getAllUsers();
-    }
-
-    @GetMapping("/{id}")
-    public UserDTO getUserById(@Valid @PathVariable Long id) {
-        return userService.getUserById(id);
-    }
-
-    @PutMapping("/{id}")
-    public UserDTO updateUser(
-            @Valid @PathVariable Long id,
-            @Valid @RequestBody UserDTO userDTO
-    ) {
-        return userService.updateUser(id, userDTO);
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteUser(@Valid @PathVariable Long id) {
-        userService.deleteUser(id);
-    }
+//    private final UserService userService;
+//
+//    public UserController(UserService userService) {
+//        this.userService = userService;
+//    }
+//
+//    @PostMapping
+//    public UserDTO createUser(@Valid @RequestBody UserDTO userDTO) {
+//        return userService.createUser(userDTO);
+//    }
+//
+//    @GetMapping
+//    public List<UserDTO> getAllUsers() {
+//        return userService.getAllUsers();
+//    }
+//
+//    @GetMapping("/{id}")
+//    public UserDTO getUserById(@Valid @PathVariable Long id) {
+//        return userService.getUserById(id);
+//    }
+//
+//    @PutMapping("/{id}")
+//    public UserDTO updateUser(
+//            @Valid @PathVariable Long id,
+//            @Valid @RequestBody UserDTO userDTO
+//    ) {
+//        return userService.updateUser(id, userDTO);
+//    }
+//
+//    @DeleteMapping("/{id}")
+//    public void deleteUser(@Valid @PathVariable Long id) {
+//        userService.deleteUser(id);
+//    }
 }

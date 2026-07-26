@@ -1,6 +1,6 @@
 package ezstub_backend.security.jwt;
 
-import com.ecommerce.mel_ecom.security.services.UserDetailsServiceImpl;
+import ezstub_backend.security.services.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

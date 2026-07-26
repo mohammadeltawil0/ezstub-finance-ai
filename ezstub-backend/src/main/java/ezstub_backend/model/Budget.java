@@ -18,7 +18,7 @@ public class Budget extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long budgetId;
 
     @Enumerated(EnumType.STRING)
     private ExpenseCategory category; // Food, Travel, etc.

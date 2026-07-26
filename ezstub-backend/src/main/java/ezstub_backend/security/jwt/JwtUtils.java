@@ -1,6 +1,6 @@
 package ezstub_backend.security.jwt;
 
-import com.ecommerce.mel_ecom.security.services.UserDetailsImpl;
+import ezstub_backend.security.services.UserDetailsImpl;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;

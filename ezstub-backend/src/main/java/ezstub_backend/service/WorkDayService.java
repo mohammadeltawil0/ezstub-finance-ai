@@ -6,13 +6,13 @@ import java.util.List;
 
 public interface WorkDayService {
 
-    WorkScheduleDTO createWorkSchedule(WorkScheduleDTO dto);
-
-    List<WorkScheduleDTO> getByUserId(Long userId);
-
-    WorkScheduleDTO getById(Long id);
-
-    WorkScheduleDTO updateWorkSchedule(Long id, WorkScheduleDTO dto);
-
-    void deleteWorkSchedule(Long id);
+//    WorkScheduleDTO createWorkSchedule(WorkScheduleDTO dto);
+//
+//    List<WorkScheduleDTO> getByUserId(Long userId);
+//
+//    WorkScheduleDTO getById(Long id);
+//
+//    WorkScheduleDTO updateWorkSchedule(Long id, WorkScheduleDTO dto);
+//
+//    void deleteWorkSchedule(Long id);
 }

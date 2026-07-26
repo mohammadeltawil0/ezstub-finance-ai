@@ -10,29 +10,29 @@ import java.util.List;
 @RequestMapping("/api/receipts")
 public class ReceiptController {
 
-    private final ReceiptService receiptService;
-
-    public ReceiptController(ReceiptService receiptService) {
-        this.receiptService = receiptService;
-    }
-
-//    @PostMapping("/upload/{userId}")
-//    public ReceiptDTO uploadReceipt(@PathVariable Long userId, @RequestParam("file") MultipartFile file) {
-//        return receiptService.uploadReceipt(userId, file);
+//    private final ReceiptService receiptService;
+//
+//    public ReceiptController(ReceiptService receiptService) {
+//        this.receiptService = receiptService;
 //    }
-
-    @GetMapping("/user/{userId}")
-    public List<ReceiptDTO> getReceipts(@PathVariable Long userId) {
-        return receiptService.getReceiptByUser(userId);
-    }
-
-    @GetMapping("/{id}")
-    public ReceiptDTO getReceipt(@PathVariable Long id) {
-        return receiptService.getReceiptById(id);
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteReceipt(@PathVariable Long id) {
-        receiptService.deleteReceipt(id);
-    }
+//
+////    @PostMapping("/upload/{userId}")
+////    public ReceiptDTO uploadReceipt(@PathVariable Long userId, @RequestParam("file") MultipartFile file) {
+////        return receiptService.uploadReceipt(userId, file);
+////    }
+//
+//    @GetMapping("/user/{userId}")
+//    public List<ReceiptDTO> getReceipts(@PathVariable Long userId) {
+//        return receiptService.getReceiptByUser(userId);
+//    }
+//
+//    @GetMapping("/{id}")
+//    public ReceiptDTO getReceipt(@PathVariable Long id) {
+//        return receiptService.getReceiptById(id);
+//    }
+//
+//    @DeleteMapping("/{id}")
+//    public void deleteReceipt(@PathVariable Long id) {
+//        receiptService.deleteReceipt(id);
+//    }
 }

@@ -15,15 +15,15 @@ public class SignupRequest {
     private String username;
 
     @NotBlank
-    @Size(max = 50)
-    @Email
-    private String email;
-
-    @NotBlank
     private String firstName;
 
     @NotBlank
     private String lastName;
+
+    @NotBlank
+    @Size(max = 50)
+    @Email
+    private String email;
 
     private Set<String> role;
 

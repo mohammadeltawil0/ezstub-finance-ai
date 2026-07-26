@@ -20,44 +20,44 @@ public class PaystubController {
     }
 
 
-    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public PaystubOCRResponseDTO uploadPayStub(@RequestParam("file") MultipartFile file, @RequestParam Long userId) throws Exception {
-        return paystubService.uploadPaystub(file, userId);
-    }
-
-//    @PostMapping
-//    public PaystubDTO createPaystub(
-//            @RequestBody PaystubDTO dto
-//    ) {
-//        return paystubService.createPaystub(dto);
+//    @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+//    public PaystubOCRResponseDTO uploadPayStub(@RequestParam("file") MultipartFile file, @RequestParam Long userId) throws Exception {
+//        return paystubService.uploadPaystub(file, userId);
 //    }
 //
-    @GetMapping("/user/{userId}")
-    public List<PaystubDTO> getByUserId(
-            @PathVariable Long userId
-    ) {
-        return paystubService.getByUserId(userId);
-    }
-
-    @GetMapping("/{id}")
-    public PaystubDTO getById(
-            @PathVariable Long id
-    ) {
-        return paystubService.getById(id);
-    }
-//
-//    @PutMapping("/{id}")
-//    public PaystubDTO updatePaystub(
-//            @PathVariable Long id,
-//            @RequestBody PaystubDTO dto
+////    @PostMapping
+////    public PaystubDTO createPaystub(
+////            @RequestBody PaystubDTO dto
+////    ) {
+////        return paystubService.createPaystub(dto);
+////    }
+////
+//    @GetMapping("/user/{userId}")
+//    public List<PaystubDTO> getByUserId(
+//            @PathVariable Long userId
 //    ) {
-//        return paystubService.updatePaystub(id, dto);
+//        return paystubService.getByUserId(userId);
 //    }
 //
-//    @DeleteMapping("/{id}")
-//    public void deletePaystub(
+//    @GetMapping("/{id}")
+//    public PaystubDTO getById(
 //            @PathVariable Long id
 //    ) {
-//        paystubService.deletePaystub(id);
+//        return paystubService.getById(id);
 //    }
+////
+////    @PutMapping("/{id}")
+////    public PaystubDTO updatePaystub(
+////            @PathVariable Long id,
+////            @RequestBody PaystubDTO dto
+////    ) {
+////        return paystubService.updatePaystub(id, dto);
+////    }
+////
+////    @DeleteMapping("/{id}")
+////    public void deletePaystub(
+////            @PathVariable Long id
+////    ) {
+////        paystubService.deletePaystub(id);
+////    }
 }

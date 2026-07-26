@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @Builder
 public class BudgetDTO {
 
-    private Long id;
+    private Long budgetId;
     private ExpenseCategory category;
     private BigDecimal limitAmount;
     private String month;
