@@ -9,13 +9,9 @@ import java.util.List;
 public interface PaystubService {
 
 
-//    PaystubOCRResponseDTO uploadPaystub(MultipartFile file, Long userId) throws Exception;
-//
-//    List<PaystubDTO> getByUserId(Long userId);
-//
-//    PaystubDTO getById(Long id);
-//
-//    PaystubDTO updatePaystub(Long id, PaystubDTO dto);
-//
-//    void deletePaystub(Long id);
+    PaystubOCRResponseDTO uploadPaystub(MultipartFile file, Long userId) throws Exception;
+    List<PaystubDTO> getByUserId(Long userId);
+    PaystubDTO getById(Long id);
+    PaystubDTO updatePaystub(Long id, PaystubDTO dto);
+    void deletePaystub(Long id);
 }

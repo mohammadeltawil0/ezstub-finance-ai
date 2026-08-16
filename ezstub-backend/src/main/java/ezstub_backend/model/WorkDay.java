@@ -45,4 +45,8 @@ public class WorkDay extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "pay_period_id")
+    private PayPeriod payPeriod;
 }
