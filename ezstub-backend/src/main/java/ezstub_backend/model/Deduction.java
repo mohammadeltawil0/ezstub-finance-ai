@@ -18,7 +18,7 @@ public class Deduction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long deductionId;
 
     private String description;
 

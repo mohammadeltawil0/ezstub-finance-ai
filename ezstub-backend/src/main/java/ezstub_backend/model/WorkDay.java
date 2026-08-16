@@ -20,7 +20,7 @@ public class WorkDay extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long workDayId;
 
     private LocalDate workDate;
 
@@ -37,7 +37,8 @@ public class WorkDay extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ScheduleType type;
 
-    private String notes;
+    @OneToOne
+    private Document document;
 
     private String employer;
 

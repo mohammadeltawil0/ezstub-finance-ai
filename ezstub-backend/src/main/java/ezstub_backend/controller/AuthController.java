@@ -11,7 +11,6 @@ import ezstub_backend.security.request.SignupRequest;
 import ezstub_backend.security.response.MessageResponse;
 import ezstub_backend.security.response.UserInfoResponse;
 import ezstub_backend.security.services.UserDetailsImpl;
-import io.jsonwebtoken.security.Password;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;

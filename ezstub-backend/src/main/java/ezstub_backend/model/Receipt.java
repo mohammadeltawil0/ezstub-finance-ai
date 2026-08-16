@@ -18,7 +18,7 @@ public class Receipt{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long receiptId;
 
     private String imageUrl;
 

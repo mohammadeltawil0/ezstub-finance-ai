@@ -1,13 +1,19 @@
 package ezstub_backend.service.impl;
 
+import ezstub_backend.exception.APIException;
 import ezstub_backend.payload.BudgetDTO;
 import ezstub_backend.model.Budget;
 import ezstub_backend.model.User;
+import ezstub_backend.payload.BudgetResponse;
 import ezstub_backend.repository.BudgetRepository;
 import ezstub_backend.repository.UserRepository;
 import ezstub_backend.service.BudgetService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -24,58 +30,56 @@ public class BudgetServiceImpl implements BudgetService {
 
     @Override
     public BudgetDTO createBudget(BudgetDTO budgetDTO, User user) {
+
+        // check if the user already has a budget for this category and month
+        boolean budgetExists = budgetRepository
+                .existsByUser_UserIdAndCategoryAndMonth(
+                        user.getUserId(),
+                        budgetDTO.getCategory(),
+                        budgetDTO.getMonth()
+                );
+
+        if (budgetExists) {
+            throw new APIException("A budget already exists for this category and month");
+        }
+
         Budget budget = modelMapper.map(budgetDTO, Budget.class);
-        List<Budget> budgetList = user.getBudgets();
-        budgetList.add(budget);
-        user.setBudgets(budgetList);
         budget.setUser(user);
         Budget savedBudget = budgetRepository.save(budget);
-        return modelMapper.map(savedBudget, BudgetDTO.class);
-
+        BudgetDTO savedBudgetDTO = modelMapper.map(savedBudget, BudgetDTO.class);
+        savedBudgetDTO.setUserId(user.getUserId());
+        return savedBudgetDTO;
     }
 
-//    @Override
-//    public List<BudgetDTO> getBudgetsByUser(Long userId) {
-//        return budgetRepository.findByUserId(userId)
-//                .stream()
-//                .map(BudgetMapper::toDTO)
-//                .toList();
-//    }
-//
-//    @Override
-//    public List<BudgetDTO> getBudgetsByUserAndMonth(Long userId, String month) {
-//        return budgetRepository.findByUserIdAndMonth(userId, month)
-//                .stream()
-//                .map(BudgetMapper::toDTO)
-//                .toList();
-//    }
-//
-//    @Override
-//    public BudgetDTO getBudgetById(Long id) {
-//
-//        Budget budget = budgetRepository.findById(id)
-//                .orElseThrow(() -> new RuntimeException("Budget not found"));
-//
-//        return BudgetMapper.toDTO(budget);
-//    }
-//
-//    @Override
-//    public BudgetDTO updateBudget(Long id, BudgetDTO dto) {
-//
-//        Budget existing = budgetRepository.findById(id)
-//                .orElseThrow(() -> new RuntimeException("Budget not found"));
-//
-//        existing.setCategory(dto.getCategory());
-//        existing.setLimitAmount(dto.getLimitAmount());
-//        existing.setMonth(dto.getMonth());
-//
-//        Budget updated = budgetRepository.save(existing);
-//
-//        return BudgetMapper.toDTO(updated);
-//    }
-//
-//    @Override
-//    public void deleteBudget(Long id) {
-//        budgetRepository.deleteById(id);
-//    }
+    @Override
+    public BudgetResponse getAllBudgets(User user, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
+
+        Sort sort = sortOrder.equalsIgnoreCase("asc")
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+
+        Page<Budget> budgetPage = budgetRepository.findByUser_UserId(user.getUserId(), pageable);
+
+        var budgetDTOs = budgetPage.getContent()
+                .stream()
+                .map(budget -> {
+                    BudgetDTO dto = modelMapper.map(budget, BudgetDTO.class);
+                    dto.setUserId(user.getUserId());
+                    return dto;
+                })
+                .toList();
+
+        return new BudgetResponse(
+                budgetDTOs,
+                budgetPage.getNumber(),
+                budgetPage.getSize(),
+                budgetPage.getTotalElements(),
+                budgetPage.getTotalPages(),
+                budgetPage.isLast()
+        );
+    }
+
+
 }

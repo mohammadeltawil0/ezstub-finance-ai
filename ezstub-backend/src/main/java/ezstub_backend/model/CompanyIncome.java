@@ -17,7 +17,7 @@ public class CompanyIncome {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long companyIncomeId;
 
     private String companyName;
     private BigDecimal totalEarnedFromCompany;

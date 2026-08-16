@@ -21,7 +21,7 @@ public class Paystub {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long paystubId;
 
     private String employerName;
 

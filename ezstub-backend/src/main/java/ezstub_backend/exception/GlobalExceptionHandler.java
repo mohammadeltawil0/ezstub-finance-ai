@@ -3,10 +3,12 @@ package ezstub_backend.exception;
 import ezstub_backend.payload.APIResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import tools.jackson.databind.exc.InvalidFormatException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -36,6 +38,23 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(APIException.class)
     public ResponseEntity<APIResponse> APIException(APIException e) {
         String message = e.getMessage();
+        APIResponse apiResponse = new APIResponse(message, false);
+        return new ResponseEntity<>(apiResponse, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<APIResponse> handleInvalidJson(HttpMessageNotReadableException e) {
+        String message = "Invalid JSON input!";
+
+        // Check for an invalid enum value
+        if (e.getCause() instanceof InvalidFormatException invalidFormatException) {
+            Class<?> targetType = invalidFormatException.getTargetType();
+
+            // Handle enum deserialization failures
+            if (targetType != null && targetType.isEnum()) {
+                message = "Not a valid category!";
+            }
+        }
         APIResponse apiResponse = new APIResponse(message, false);
         return new ResponseEntity<>(apiResponse, HttpStatus.BAD_REQUEST);
     }
