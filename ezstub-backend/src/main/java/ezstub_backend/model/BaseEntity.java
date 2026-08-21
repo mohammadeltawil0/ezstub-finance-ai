@@ -1,5 +1,6 @@
 package ezstub_backend.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,9 +15,11 @@ import java.time.LocalDateTime;
 public abstract class BaseEntity {
 
     @CreationTimestamp
+    @Column(nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
+    @Column(nullable = false)
     private LocalDateTime updatedAt;
 
 }

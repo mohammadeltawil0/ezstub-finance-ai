@@ -6,77 +6,78 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Entity
-@Data
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "users",
         uniqueConstraints = {
-                @UniqueConstraint(columnNames = "username"),
-                @UniqueConstraint(columnNames = "email")
+                @UniqueConstraint(name = "uk_users_username", columnNames = "username"),
+                @UniqueConstraint(name = "uk_users_email", columnNames = "email")
         })
-public class User {
+@Builder
+public class User extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
 
-    @NotBlank
-    @Column(name = "first_name")
+    @NotBlank(message = "First name is required!")
+    @Size(max = 50, message = "First name cannot exceed 50 characters!")
+    @Column(name = "first_name", nullable = false, length = 50)
     private String firstName;
 
-    @NotBlank
-    @Column(name = "last_name")
+    @NotBlank(message = "Last name is required!")
+    @Size(max = 50, message = "Last name cannot exceed 50 characters!")
+    @Column(name = "last_name", nullable = false, length = 50)
     private String lastName;
 
-    @NotBlank
-    @Size(max = 20)
-    @Column(name = "username")
-    private String userName;
+    @NotBlank(message = "Username is required")
+    @Size(min = 3, max = 20, message = "Username must be between 3 and 20 characters")
+    @Column(name = "username", nullable = false, unique = true, length = 20)
+    private String username;
 
-    @NotBlank
-    @Column(name = "email", unique = true, nullable = false)
-    @Email
+    @NotBlank(message = "Email is required")
+    @Email(message = "Invalid email")
+    @Size(max = 100)
+    @Column(name = "email", nullable = false, unique = true, length = 100)
     private String email;
 
-    @NotBlank
+    @NotBlank(message = "Password is required")
     @Size(max = 120)
-    @Column(name = "password")
+    @Column(name = "password", nullable = false, length = 120)
     private String password;
 
-    public User(String userName, String firstName, String lastName, String email, String password) {
-        this.userName = userName;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.password = password;
-    }
-
     //Relationships
-    @OneToMany(mappedBy = "user")
-    private List<WorkDay> workDays;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<PayPeriod> payPeriods = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    private List<Paystub> paystubs;
+    @Builder.Default
+    private List<Paystub> paystubs = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    private List<Receipt> receipts;
+    @Builder.Default
+    private List<WorkDay> workDays = new ArrayList<>();
 
     @OneToMany(mappedBy = "user")
-    private List<Budget> budgets;
+    @Builder.Default
+    private List<Receipt> receipts = new ArrayList<>();
 
-    @Getter
-    @Setter
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE},
-            fetch = FetchType.EAGER)
-    @JoinTable(name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @OneToMany(mappedBy = "user")
+    @Builder.Default
+    private List<Budget> budgets = new ArrayList<>();
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
+    @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @Builder.Default
     private Set<Role> roles = new HashSet<>();
+
 }

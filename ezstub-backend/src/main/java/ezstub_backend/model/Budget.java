@@ -12,7 +12,6 @@ import lombok.*;
 import java.math.BigDecimal;
 
 @Entity
-@Data
 @Table(name = "budgets")
 @Getter
 @Setter
@@ -25,7 +24,8 @@ public class Budget extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long budgetId;
 
-    @NotNull(message = "Category is required")    @Enumerated(EnumType.STRING)
+    @NotNull(message = "Category is required")
+    @Enumerated(EnumType.STRING)
     private ExpenseCategory category; // Food, Travel, etc.
 
     @NotNull(message = "Limit amount is required")

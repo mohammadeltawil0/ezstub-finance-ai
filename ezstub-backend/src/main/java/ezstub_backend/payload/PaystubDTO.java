@@ -27,6 +27,5 @@ public class PaystubDTO {
     private BigDecimal ytdNet;
 
     private List<PaystubDeductionDTO> deductions;
-
     private List<PaystubEarningDTO> rateVariations;
 }

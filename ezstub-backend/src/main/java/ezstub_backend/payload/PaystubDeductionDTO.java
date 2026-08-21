@@ -12,8 +12,6 @@ import java.math.BigDecimal;
 public class PaystubDeductionDTO {
 
     private String description;
-
     private BigDecimal currentAmount;
-
     private BigDecimal ytdAmount;
 }
