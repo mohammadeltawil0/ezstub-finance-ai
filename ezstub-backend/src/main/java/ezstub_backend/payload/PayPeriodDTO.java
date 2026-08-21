@@ -10,10 +10,11 @@ import java.time.LocalDate;
 @Builder
 public class PayPeriodDTO {
 
-    private Long id;
+    private Long payPeriodId;
     private LocalDate startDate;
     private LocalDate endDate;
     private LocalDate payDate;
     private String employer;
     private Long userId;
+    private Long paystubId;
 }
