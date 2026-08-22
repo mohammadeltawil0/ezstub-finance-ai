@@ -5,11 +5,9 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.jspecify.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Getter
@@ -38,18 +36,18 @@ public class User extends BaseEntity {
     @Column(name = "last_name", nullable = false, length = 50)
     private String lastName;
 
-    @NotBlank(message = "Username is required")
+    @NotBlank(message = "Username is required!")
     @Size(min = 3, max = 20, message = "Username must be between 3 and 20 characters")
     @Column(name = "username", nullable = false, unique = true, length = 20)
     private String username;
 
-    @NotBlank(message = "Email is required")
+    @NotBlank(message = "Email is required!")
     @Email(message = "Invalid email")
     @Size(max = 100)
     @Column(name = "email", nullable = false, unique = true, length = 100)
     private String email;
 
-    @NotBlank(message = "Password is required")
+    @NotBlank(message = "Password is required!")
     @Size(max = 120)
     @Column(name = "password", nullable = false, length = 120)
     private String password;
