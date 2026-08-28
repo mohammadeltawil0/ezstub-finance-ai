@@ -68,11 +68,30 @@ public class PayPeriodServiceImpl implements PayPeriodService {
 
     @Override
     public PayPeriodDTO updatePayPeriod(Long id, PayPeriodDTO dto) {
-        return null;
+        PayPeriod existing = payPeriodRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("PayPeriod", "payPeriodId", id));
+
+        existing.setStartDate(dto.getStartDate());
+        existing.setEndDate(dto.getEndDate());
+        existing.setPayDate(dto.getPayDate());
+        existing.setEmployer(dto.getEmployer());
+
+        PayPeriod saved = payPeriodRepository.save(existing);
+
+        PayPeriodDTO response = modelMapper.map(saved, PayPeriodDTO.class);
+
+        response.setPayPeriodId(saved.getPayPeriodId());
+        if (saved.getUser() != null) {
+            response.setUserId(saved.getUser().getUserId());
+        }
+        return response;
+
     }
 
     @Override
     public void deletePayPeriod(Long id) {
-
+        PayPeriod payPeriod = payPeriodRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("PayPeriod", "payPeriodId", id));
+        payPeriodRepository.delete(payPeriod);
     }
 }

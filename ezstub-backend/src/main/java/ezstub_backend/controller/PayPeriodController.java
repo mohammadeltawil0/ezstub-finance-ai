@@ -8,10 +8,9 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/pay-periods")
@@ -27,5 +26,30 @@ public class PayPeriodController {
         Long userId = authUtil.loggedInUserId();
         PayPeriodDTO response = payPeriodService.createPayPeriod(payPeriodDTO, userId);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<PayPeriodDTO>> getAllPayPeriods() {
+        Long userId = authUtil.loggedInUserId();
+        List<PayPeriodDTO> response = payPeriodService.getByUserId(userId);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<PayPeriodDTO> getPayPeriodById(@PathVariable Long id) {
+        PayPeriodDTO response = payPeriodService.getById(id);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<PayPeriodDTO> updatePayPeriod(@PathVariable Long id, @Valid @RequestBody PayPeriodDTO dto) {
+        PayPeriodDTO response = payPeriodService.updatePayPeriod(id, dto);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        payPeriodService.deletePayPeriod(id);
+        return ResponseEntity.noContent().build();
     }
 }
