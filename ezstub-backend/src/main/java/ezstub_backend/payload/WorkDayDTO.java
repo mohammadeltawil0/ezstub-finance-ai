@@ -12,17 +12,19 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class WorkScheduleDTO {
+public class WorkDayDTO {
 
-    private Long id;
+    private Long workDayId;
     private LocalDate workDate;
-    private LocalTime startTime;
-    private LocalTime endTime;
+    private LocalTime punchIn;
+    private LocalTime punchOut;
     private Integer unpaidBreakMinutes;
     private BigDecimal hourlyRate;
     private BigDecimal expectedGrossPay;
-    private ScheduleType type;
-    private String notes;
+    private ScheduleType scheduleType;
     private String employer;
+
+    private Long documentId;
     private Long userId;
+    private Long payPeriodId;
 }

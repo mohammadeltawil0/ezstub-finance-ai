@@ -14,7 +14,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "paystubs")
+@Table(
+        name = "paystubs",
+        indexes = {
+                @Index(name = "idx_paystub_user", columnList = "user_id"),
+                @Index(name = "idx_paystub_dates", columnList = "pay_begin_date, pay_end_date")
+        }
+)
 @Getter
 @Setter
 @NoArgsConstructor
@@ -26,8 +32,7 @@ public class Paystub extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long paystubId;
 
-
-    @NotBlank(message = "Employer name is required!")
+    @NotBlank(message = "Employer name is required")
     @Size(max = 150)
     @Column(name = "employer_name", nullable = false, length = 150)
     private String employerName;
@@ -36,40 +41,64 @@ public class Paystub extends BaseEntity {
     @Column(name = "employer_location", length = 250)
     private String employerLocation;
 
-    @NotNull(message = "Pay begin date is required!")
+    @NotNull(message = "Pay begin date is required")
     @Column(name = "pay_begin_date", nullable = false)
     private LocalDate payBeginDate;
 
-    @NotNull(message = "Pay end date is required!")
+    @NotNull(message = "Pay end date is required")
     @Column(name = "pay_end_date", nullable = false)
     private LocalDate payEndDate;
 
-    @NotNull(message = "Check date is required!")
+    @NotNull(message = "Check date is required")
     @Column(name = "check_date", nullable = false)
     private LocalDate checkDate;
 
     @DecimalMin(value = "0.00")
-    @Column(precision = 12, scale = 2, name = "base_hourly_rate")
+    @Column(
+            precision = 12,
+            scale = 2,
+            name = "base_hourly_rate"
+    )
     private BigDecimal baseHourlyRate;
 
     @DecimalMin(value = "0.00")
-    @Column(precision = 12, scale = 2, name = "total_hours_worked")
+    @Column(
+            precision = 12,
+            scale = 2,
+            name = "total_hours_worked"
+    )
     private BigDecimal totalHoursWorked;
 
     @DecimalMin(value = "0.00")
-    @Column(precision = 12, scale = 2, name = "total_hours_worked")
+    @Column(
+            precision = 12,
+            scale = 2,
+            name = "current_gross"
+    )
     private BigDecimal currentGross;
 
     @DecimalMin(value = "0.00")
-    @Column(precision = 12, scale = 2, name = "ytd_gross")
+    @Column(
+            precision = 12,
+            scale = 2,
+            name = "ytd_gross"
+    )
     private BigDecimal ytdGross;
 
     @DecimalMin(value = "0.00")
-    @Column(precision = 12, scale = 2, name = "current_net")
+    @Column(
+            precision = 12,
+            scale = 2,
+            name = "current_net"
+    )
     private BigDecimal currentNet;
 
     @DecimalMin(value = "0.00")
-    @Column(precision = 12, scale = 2, name = "ytd_net")
+    @Column(
+            precision = 12,
+            scale = 2,
+            name = "ytd_net"
+    )
     private BigDecimal ytdNet;
 
     @Builder.Default
@@ -79,20 +108,40 @@ public class Paystub extends BaseEntity {
     @Column(nullable = false)
     private LocalDateTime uploadedAt;
 
-    @OneToMany(mappedBy = "paystub", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(
+            mappedBy = "paystub",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     @Builder.Default
     private List<Deduction> deductions = new ArrayList<>();
 
-    @OneToMany(mappedBy = "paystub", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(
+            mappedBy = "paystub",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
     @Builder.Default
     private List<Earning> earnings = new ArrayList<>();
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(
+            name = "user_id",
+            nullable = false
+    )
     private User user;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(
+            name = "pay_period_id",
+            unique = true
+    )
+    private PayPeriod payPeriod;
 
-
-
-
+    @PrePersist
+    protected void onUpload() {
+        if (uploadedAt == null) {
+            uploadedAt = LocalDateTime.now();
+        }
+    }
 }

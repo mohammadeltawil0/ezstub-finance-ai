@@ -1,10 +1,6 @@
 package ezstub_backend.controller;
 
-import ezstub_backend.payload.WorkScheduleDTO;
-import ezstub_backend.service.WorkDayService;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/work-schedules")

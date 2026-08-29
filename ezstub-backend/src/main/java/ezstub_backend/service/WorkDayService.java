@@ -1,18 +1,24 @@
 package ezstub_backend.service;
 
-import ezstub_backend.payload.WorkScheduleDTO;
+import ezstub_backend.payload.WorkDayDTO;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 public interface WorkDayService {
 
-    WorkScheduleDTO createWorkSchedule(WorkScheduleDTO dto);
+    WorkDayDTO createWorkSchedule(WorkDayDTO dto);
 
-    List<WorkScheduleDTO> getByUserId(Long userId);
+    List<WorkDayDTO> getByUserId(Long userId);
 
-    WorkScheduleDTO getById(Long id);
+    WorkDayDTO getById(Long id);
 
-    WorkScheduleDTO updateWorkSchedule(Long id, WorkScheduleDTO dto);
+    WorkDayDTO updateWorkSchedule(Long id, WorkDayDTO dto);
 
     void deleteWorkSchedule(Long id);
+
+    BigDecimal calculateExpectedGross(WorkDayDTO dto);
+
+
+
 }
