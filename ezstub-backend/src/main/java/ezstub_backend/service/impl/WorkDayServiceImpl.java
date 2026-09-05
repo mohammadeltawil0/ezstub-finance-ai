@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Service
-public class WorkScheduleServiceImpl implements WorkDayService {
+public class WorkDayServiceImpl implements WorkDayService {
 
     @Autowired
     private WorkDayRepository workDayRepository;

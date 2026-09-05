@@ -11,7 +11,6 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name = "paystub_earnings")
-@Data
 @Getter
 @Setter
 @NoArgsConstructor
