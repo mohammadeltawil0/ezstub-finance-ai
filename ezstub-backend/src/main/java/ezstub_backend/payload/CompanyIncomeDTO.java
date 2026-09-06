@@ -1,19 +1,18 @@
 package ezstub_backend.payload;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Data
-@AllArgsConstructor
+@Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class CompanyIncomeDTO {
 
-    private Long companyIncomeId;
-
+//    private Long companyIncomeId;
     private String companyName;
     private BigDecimal totalEarnedFromCompany;
     private BigDecimal totalDeductionsFromCompany;

@@ -13,18 +13,28 @@ import lombok.*;
 @Builder
 public class UserDTO {
 
-    private Long id;
+    private Long userId;
 
-    @NotBlank(message = "First name is required!")
+    @NotBlank(message = "First name is required")
+    @Size(max = 50)
     private String firstName;
 
-    @NotBlank(message = "Last name is required!")
+    @NotBlank(message = "Last name is required")
+    @Size(max = 50)
     private String lastName;
 
+    @NotBlank(message = "Username is required")
+    @Size(min = 3, max = 20)
+    private String username;
+
+    @NotBlank(message = "Email is required")
     @Email(message = "Invalid email")
-    @NotBlank(message = "Email required")
     private String email;
 
-    @Size(min = 8, message = "Password must be at least 8 characters")
+    @Size(
+            min = 8,
+            max = 120,
+            message = "Password must be between 8 and 120 characters"
+    )
     private String password;
 }

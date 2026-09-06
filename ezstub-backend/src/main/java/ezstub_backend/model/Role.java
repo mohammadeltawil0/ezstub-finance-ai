@@ -5,6 +5,15 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
+@Table(
+        name = "roles",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "uk_role_name",
+                        columnNames = "role_name"
+                )
+        }
+)
 @Data
 @Getter
 @Setter

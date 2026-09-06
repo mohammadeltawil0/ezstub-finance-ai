@@ -21,21 +21,19 @@ import java.math.BigDecimal;
 public class BudgetDTO {
 
     private Long budgetId;
-    @NotNull(message = "Category is required")
-    @Enumerated(EnumType.STRING)
+
+    @NotNull(message = "Category is required!")
     private ExpenseCategory category; // Food, Travel, etc.
 
     @NotNull(message = "Limit amount is required")
-    @DecimalMin(value = "0.01", message = "Limit amount must be greater than 0")
+    @DecimalMin(value = "0.01", message = "Limit amount must be greater than 0!")
     private BigDecimal limitAmount;
 
     @NotBlank(message = "Month is required")
     @Pattern(
             regexp = "^\\d{4}-(0[1-9]|1[0-2])$",
-            message = "Month must be in YYYY-MM format")
+            message = "Month must be in YYYY-MM format!")
     private String month; // "2026-05"
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
     private Long userId;
 }

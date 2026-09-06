@@ -132,17 +132,17 @@ public class WebSecurityConfig {
                 Set<Role> adminRoles = Set.of(adminRole);
 
                 // Create users if not already present
-                if (!userRepository.existsByUserName("user1")) {
+                if (!userRepository.existsByUsername("user1")) {
                     User user1 = new User("user1", "Test", "User", "user1@example.com", passwordEncoder.encode("password1"));
                     user1.setRoles(userRoles);
                     userRepository.save(user1);
                 }
-                if (!userRepository.existsByUserName("seller1")) {
-                    User seller1 = new User("payrollAnalyst1", "Payroll", "Analyst", "seller1@example.com", passwordEncoder.encode("password2"));
-                    seller1.setRoles(payrollAnalystRoles);
-                    userRepository.save(seller1);
+                if (!userRepository.existsByUsername("payrollAnalyst1")) {
+                    User payrollAnalyst = new User("payrollAnalyst1", "Payroll", "Analyst", "payrollAnalyst1@example.com", passwordEncoder.encode("password2"));
+                    payrollAnalyst.setRoles(payrollAnalystRoles);
+                    userRepository.save(payrollAnalyst);
                 }
-                if (!userRepository.existsByUserName("admin")) {
+                if (!userRepository.existsByUsername("admin")) {
                     User admin = new User("admin", "Test", "Admin", "admin@example.com", passwordEncoder.encode("adminPass"));
                     admin.setRoles(adminRoles);
                     userRepository.save(admin);
