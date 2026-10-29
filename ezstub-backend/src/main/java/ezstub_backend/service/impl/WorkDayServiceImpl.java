@@ -27,7 +27,7 @@ public class WorkDayServiceImpl implements WorkDayService {
     private ModelMapper modelMapper;
 
     @Override
-    public WorkDayDTO createWorkSchedule(WorkDayDTO dto) {
+    public WorkDayDTO createWorkDay(WorkDayDTO dto, Long userId) {
         return null;
     }
 

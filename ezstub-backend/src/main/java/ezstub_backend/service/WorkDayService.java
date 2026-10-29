@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface WorkDayService {
 
-    WorkDayDTO createWorkSchedule(WorkDayDTO dto);
+    WorkDayDTO createWorkDay(WorkDayDTO dto, Long userId);
 
     List<WorkDayDTO> getByUserId(Long userId);
 

@@ -29,4 +29,7 @@ public class PaystubController {
         return paystubService.uploadPaystub(file, user.getUserId());
     }
 
+//    @GetMapping("/{id}")
+//    public PaystubDTO getPayStubById(@RequestParam)
+
 }

@@ -1,50 +1,28 @@
 package ezstub_backend.controller;
 
+import ezstub_backend.payload.WorkDayDTO;
+import ezstub_backend.service.WorkDayService;
+import ezstub_backend.util.AuthUtil;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/work-schedules")
+@RequestMapping("/api/work-days")
 public class WorkDayController {
 
-//    private final WorkDayService workScheduleService;
-//
-//    public WorkDayController(WorkDayService workScheduleService) {
-//        this.workScheduleService = workScheduleService;
-//    }
-//
-//    @PostMapping
-//    public WorkScheduleDTO createWorkSchedule(
-//            @RequestBody WorkScheduleDTO dto
-//    ) {
-//        return workScheduleService.createWorkSchedule(dto);
-//    }
-//
-//    @GetMapping("/user/{userId}")
-//    public List<WorkScheduleDTO> getByUserId(
-//            @PathVariable Long userId
-//    ) {
-//        return workScheduleService.getByUserId(userId);
-//    }
-//
-//    @GetMapping("/{id}")
-//    public WorkScheduleDTO getById(
-//            @PathVariable Long id
-//    ) {
-//        return workScheduleService.getById(id);
-//    }
-//
-//    @PutMapping("/{id}")
-//    public WorkScheduleDTO updateWorkSchedule(
-//            @PathVariable Long id,
-//            @RequestBody WorkScheduleDTO dto
-//    ) {
-//        return workScheduleService.updateWorkSchedule(id, dto);
-//    }
-//
-//    @DeleteMapping("/{id}")
-//    public void deleteWorkSchedule(
-//            @PathVariable Long id
-//    ) {
-//        workScheduleService.deleteWorkSchedule(id);
-//    }
+    @Autowired
+    private WorkDayService workDayService;
+
+    @Autowired
+    private AuthUtil authUtil;
+
+    @PostMapping
+    public ResponseEntity<WorkDayDTO> createWorkDay(@Valid @RequestBody WorkDayDTO workDayDTO) {
+        Long userId = authUtil.loggedInUserId();
+        WorkDayDTO response = workDayService.createWorkDay(workDayDTO, userId);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
 }
