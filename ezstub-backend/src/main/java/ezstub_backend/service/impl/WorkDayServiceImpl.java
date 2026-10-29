@@ -45,7 +45,14 @@ public class WorkDayServiceImpl implements WorkDayService {
 
     @Override
     public List<WorkDayDTO> getByUserId(Long userId) {
-        return List.of();
+        return workDayRepository
+                .findByUser_UserId(userId)
+                .stream()
+                .map(workDay -> {
+                    WorkDayDTO dto = modelMapper.map(workDay, WorkDayDTO.class);
+                    dto.setUserId(userId);
+                    return dto;
+                }).toList();
     }
 
     @Override
