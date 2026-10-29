@@ -1,5 +1,8 @@
 package ezstub_backend.service.impl;
 
+import ezstub_backend.exception.ResourceNotFoundException;
+import ezstub_backend.model.User;
+import ezstub_backend.model.WorkDay;
 import ezstub_backend.payload.WorkDayDTO;
 import ezstub_backend.repository.UserRepository;
 import ezstub_backend.repository.WorkDayRepository;
@@ -28,7 +31,16 @@ public class WorkDayServiceImpl implements WorkDayService {
 
     @Override
     public WorkDayDTO createWorkDay(WorkDayDTO dto, Long userId) {
-        return null;
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
+
+        WorkDay workDay = modelMapper.map(dto, WorkDay.class);
+        workDay.setUser(user);
+        WorkDay saved = workDayRepository.save(workDay);
+        WorkDayDTO response = modelMapper.map(saved, WorkDayDTO.class);
+        response.setUserId(userId);
+        return response;
+
     }
 
     @Override
