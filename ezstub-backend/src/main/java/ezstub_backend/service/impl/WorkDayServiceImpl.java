@@ -68,12 +68,16 @@ public class WorkDayServiceImpl implements WorkDayService {
 
     @Override
     public WorkDayDTO updateWorkSchedule(Long id, WorkDayDTO dto) {
+//        WorkDay existing = workDayRepository.findById(id)
+//                .orElseThrow(() -> new ResourceNotFoundException("WorkDay", "workDayId", id));
         return null;
     }
 
     @Override
     public void deleteWorkSchedule(Long id) {
-
+        WorkDay workDay = workDayRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("WorkDay", "workDay", id));
+        workDayRepository.delete(workDay);
     }
 
     @Override
