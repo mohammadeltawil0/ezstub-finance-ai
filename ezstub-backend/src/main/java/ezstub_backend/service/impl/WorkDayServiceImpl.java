@@ -57,7 +57,13 @@ public class WorkDayServiceImpl implements WorkDayService {
 
     @Override
     public WorkDayDTO getById(Long id) {
-        return null;
+        WorkDay workDay = workDayRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("WorkDay", "workDayId", id));
+        WorkDayDTO dto = modelMapper.map(workDay, WorkDayDTO.class);
+        if (workDay.getUser() != null) {
+            dto.setUserId(workDay.getUser().getUserId());
+        }
+        return dto;
     }
 
     @Override
