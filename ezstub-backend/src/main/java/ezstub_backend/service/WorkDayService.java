@@ -13,9 +13,9 @@ public interface WorkDayService {
 
     WorkDayDTO getById(Long id);
 
-    WorkDayDTO updateWorkSchedule(Long id, WorkDayDTO dto);
+    WorkDayDTO updateWorkDay(Long id, WorkDayDTO dto);
 
-    void deleteWorkSchedule(Long id);
+    void deleteWorkDay(Long id);
 
     BigDecimal calculateExpectedGross(WorkDayDTO dto);
 

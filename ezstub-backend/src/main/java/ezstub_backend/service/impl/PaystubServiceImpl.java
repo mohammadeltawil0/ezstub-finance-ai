@@ -6,6 +6,7 @@ import ezstub_backend.payload.PaystubDTO;
 import ezstub_backend.payload.ocr.PaystubOCRResponseDTO;
 import ezstub_backend.model.Paystub;
 import ezstub_backend.model.User;
+import ezstub_backend.repository.PayPeriodRepository;
 import ezstub_backend.repository.PaystubRepository;
 import ezstub_backend.repository.UserRepository;
 import ezstub_backend.service.PaystubService;
@@ -18,6 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 import tools.jackson.databind.ObjectMapper;
 
 import java.io.File;
+import java.io.Reader;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -31,6 +34,8 @@ public class PaystubServiceImpl implements PaystubService {
     private UserRepository userRepository;
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private PayPeriodRepository payPeriodRepository;
 
     @Override
     public PaystubOCRResponseDTO uploadPaystub(MultipartFile file, Long userId) throws Exception {
@@ -43,10 +48,10 @@ public class PaystubServiceImpl implements PaystubService {
             file.transferTo(tempFile);
             String response = paystubClient.uploadPaystub(tempFile);
 
-            PaystubOCRResponseDTO ocrResponseDTO = modelMapper.map(response, PaystubOCRResponseDTO.class);
+            ObjectMapper objectMapper = new ObjectMapper();
+            PaystubOCRResponseDTO ocrResponseDTO = objectMapper.readValue(response, PaystubOCRResponseDTO.class);
 
             Paystub paystub = new Paystub();
-
             paystub.setEmployerName(ocrResponseDTO.getEmployerName());
             paystub.setEmployerLocation(ocrResponseDTO.getEmployerLocation());
             paystub.setPayBeginDate(java.time.LocalDate.parse(ocrResponseDTO.getPayBeginDate()));
@@ -57,11 +62,16 @@ public class PaystubServiceImpl implements PaystubService {
             paystub.setCurrentGross(ocrResponseDTO.getCurrentGross());
             paystub.setYtdGross(ocrResponseDTO.getYtdGross());
             paystub.setCurrentNet(ocrResponseDTO.getCurrentNet());
-            paystub.setYtdGross(ocrResponseDTO.getYtdGross());
+            paystub.setYtdNet(ocrResponseDTO.getYtdNet());
             paystub.setVerified(false);
             paystub.setUploadedAt(java.time.LocalDateTime.now());
             paystub.setUser(user);
-            Paystub saved = paystubRepository.save(paystub);
+
+            // Bind to matching PayPeriod if it exists
+            LocalDate beginDate = paystub.getPayBeginDate();
+            payPeriodRepository.findByUser_UserIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(userId, beginDate, beginDate)
+                    .ifPresent(paystub::setPayPeriod);
+            paystubRepository.save(paystub);
 
             return ocrResponseDTO;
 
