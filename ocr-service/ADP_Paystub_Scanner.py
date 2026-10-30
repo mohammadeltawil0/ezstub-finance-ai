@@ -241,7 +241,7 @@ def process_and_sanitize_adp_paystub(pdf_path):
 
 
 if __name__ == "__main__":
-    PDF_FILE_PATH = r"C:\Users\Mohammad\Desktop\FCC-OpenCV-Course\opencv1\Doc_scanner\08-29-2025 MCC_Paystub.pdf"
+    PDF_FILE_PATH = ""
     
     print("Processing ADP document layout natively...")
     json_output = process_and_sanitize_adp_paystub(PDF_FILE_PATH)
