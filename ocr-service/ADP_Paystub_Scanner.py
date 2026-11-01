@@ -2,6 +2,18 @@ import re
 import json
 import os
 from markitdown import MarkItDown
+from datetime import datetime
+
+def format_date_to_iso(date_str):
+    """Converts 'MM/DD/YYYY' to 'YYYY-MM-DD' for Java LocalDate compatibility."""
+    if not date_str:
+        return None
+    try:
+        # Parse US format and return ISO format
+        dt = datetime.strptime(date_str.strip(), "%m/%d/%Y")
+        return dt.strftime("%Y-%m-%d")
+    except ValueError:
+        return date_str
 
 def clean_markdown(text):
 
@@ -132,36 +144,37 @@ def process_and_sanitize_adp_paystub(pdf_path):
     name_chunks = []
     location_chunks = []
 
-    # 1. Parse Metadata dynamically without hardcoded employer strings
+    # 1. Parse Metadata dynamically across Markdown table cells
     for line in lines:
-        parts = [p.strip() for p in line.split("|") if p.strip()]
-        
-        # Capture the dates using the text label structures
-        p_begin = re.search(r"Period Beginning:\s*\|\s*\|\s*([\d/]+)", line)
-        p_end = re.search(r"Period Ending:\s*\|\s*\|\s*([\d/]+)", line)
-        p_date = re.search(r"Pay Date:\s*\|\s*\|\s*([\d/]+)", line)
-
-        if p_begin: 
-            payroll_data["payBeginDate"] = p_begin.group(1)
-            # The left side of the "Period Beginning" row holds the raw company name cells
-            if "Period Beginning:" in line:
-                left_side = line.split("Period Beginning:")[0]
-                name_chunks = [p.strip() for p in left_side.split("|") if p.strip()]
+        # Check for Period Beginning row
+        if "Beginning" in line:
+            p_begin = re.search(r'([\d]{2}/[\d]{2}/[\d]{4})', line)
+            if p_begin:
+                payroll_data["payBeginDate"] = format_date_to_iso(p_begin.group(1))
+            
+            # Capture company name chunks from the left side
+            left_side = line.split("Beginning")[0]
+            name_chunks = [p.strip() for p in left_side.split("|") if p.strip() and p.strip() != "Period"]
                 
-        if p_end: 
-            payroll_data["payEndDate"] = p_end.group(1)
-            # The left side of the "Period Ending" row holds street address fragments
-            if "Period Ending:" in line:
-                left_side = line.split("Period Ending:")[0]
-                location_chunks.extend([p.strip() for p in left_side.split("|") if p.strip()])
+        # Check for Period Ending row
+        if "Ending" in line:
+            p_end = re.search(r'([\d]{2}/[\d]{2}/[\d]{4})', line)
+            if p_end:
+                payroll_data["payEndDate"] = format_date_to_iso(p_end.group(1))
+            
+            # Capture address fragments from the left side
+            left_side = line.split("Ending")[0]
+            location_chunks.extend([p.strip() for p in left_side.split("|") if p.strip() and p.strip() != "Period"])
                 
-        if p_date: 
-            payroll_data["checkDate"] = p_date.group(1)
-            # The left side of the "Pay Date" row holds city, state, and zip code fields
-            if "Pay Date:" in line:
-                left_side = line.split("Pay Date:")[0]
-                location_chunks.extend([p.strip() for p in left_side.split("|") if p.strip()])
-
+        # Check for Pay Date row
+        if "Pay Date" in line or ("Pay" in line and "Date:" in line):
+            p_date = re.search(r'([\d]{2}/[\d]{2}/[\d]{4})', line)
+            if p_date:
+                payroll_data["checkDate"] = format_date_to_iso(p_date.group(1))
+            
+            # Capture city/state/zip fragments from the left side
+            left_side = line.split("Date")[0]
+            location_chunks.extend([p.strip() for p in left_side.split("|") if p.strip() and p.strip() not in ["Pay", "Date:"]])
     # Dynamically build and format corporate details if pieces were gathered
     if name_chunks:
         payroll_data["employerName"] = " ".join(name_chunks).title()
@@ -236,7 +249,7 @@ def process_and_sanitize_adp_paystub(pdf_path):
                 if amounts:
                     payroll_data["currentNet"] = parse_adp_numeric(amounts[0])
                     payroll_data["ytdNet"] = payroll_data["ytdNet"] or payroll_data["currentNet"]
-
+    print(json.dumps(payroll_data, indent=4))
     return payroll_data
 
 
