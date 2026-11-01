@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -51,9 +52,24 @@ public class AuthTokenFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private String parseJwt(HttpServletRequest request) {
-        String jwt = jwtUtils.getJwtFromCookies(request);
-        logger.debug("AuthTokenFilter.java: {}", jwt);
-        return jwt;
+//    private String parseJwt(HttpServletRequest request) {
+//        String jwt = jwtUtils.getJwtFromCookies(request);
+//        logger.debug("AuthTokenFilter.java: {}", jwt);
+//        return jwt;
+//    }
+private String parseJwt(HttpServletRequest request) {
+    // 1. Check the Authorization header first (for Postman / API clients)
+    String headerAuth = request.getHeader("Authorization");
+    if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {
+        return headerAuth.substring(7);
     }
+
+    // 2. Fall back to checking cookies (if your frontend app uses cookies)
+    String jwtFromCookie = jwtUtils.getJwtFromCookies(request);
+    if (jwtFromCookie != null) {
+        return jwtFromCookie;
+    }
+
+    return null;
+}
 }

@@ -5,6 +5,7 @@ import ezstub_backend.payload.PaystubEarningDTO;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -16,9 +17,9 @@ public class PaystubOCRResponseDTO {
 
     private String employerName;
     private String employerLocation;
-    private String payBeginDate;
-    private String payEndDate;
-    private String checkDate;
+    private LocalDate payBeginDate;
+    private LocalDate payEndDate;
+    private LocalDate checkDate;
     private BigDecimal baseHourlyRate;
     private BigDecimal totalHoursWorked;
     private BigDecimal currentGross;

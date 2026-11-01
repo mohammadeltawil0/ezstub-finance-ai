@@ -15,7 +15,7 @@ public class PaystubClient {
     private final RestTemplate restTemplate = new RestTemplate();
 
     public String uploadPaystub(File pdfFile) {
-        String url = "http://127.0.0.1:5050/api/paystub/extract";
+        String url = "http://192.168.12.152:5050/api/paystub/extract";
 
         HttpHeaders headers = new HttpHeaders();
 

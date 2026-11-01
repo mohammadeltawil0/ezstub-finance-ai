@@ -21,6 +21,7 @@ import tools.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.Reader;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -51,12 +52,13 @@ public class PaystubServiceImpl implements PaystubService {
             ObjectMapper objectMapper = new ObjectMapper();
             PaystubOCRResponseDTO ocrResponseDTO = objectMapper.readValue(response, PaystubOCRResponseDTO.class);
 
+
             Paystub paystub = new Paystub();
             paystub.setEmployerName(ocrResponseDTO.getEmployerName());
             paystub.setEmployerLocation(ocrResponseDTO.getEmployerLocation());
-            paystub.setPayBeginDate(java.time.LocalDate.parse(ocrResponseDTO.getPayBeginDate()));
-            paystub.setPayEndDate(java.time.LocalDate.parse(ocrResponseDTO.getPayEndDate()));
-            paystub.setCheckDate(java.time.LocalDate.parse(ocrResponseDTO.getCheckDate()));
+            paystub.setPayBeginDate(ocrResponseDTO.getPayBeginDate());
+            paystub.setPayEndDate(ocrResponseDTO.getPayEndDate());
+            paystub.setCheckDate(ocrResponseDTO.getCheckDate());
             paystub.setBaseHourlyRate(ocrResponseDTO.getBaseHourlyRate());
             paystub.setTotalHoursWorked(ocrResponseDTO.getTotalHoursWorked());
             paystub.setCurrentGross(ocrResponseDTO.getCurrentGross());
@@ -67,11 +69,17 @@ public class PaystubServiceImpl implements PaystubService {
             paystub.setUploadedAt(java.time.LocalDateTime.now());
             paystub.setUser(user);
 
+
             // Bind to matching PayPeriod if it exists
             LocalDate beginDate = paystub.getPayBeginDate();
             payPeriodRepository.findByUser_UserIdAndStartDateLessThanEqualAndEndDateGreaterThanEqual(userId, beginDate, beginDate)
                     .ifPresent(paystub::setPayPeriod);
             paystubRepository.save(paystub);
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+            if (ocrResponseDTO.getPayBeginDate() != null) {
+                paystub.setPayBeginDate(ocrResponseDTO.getPayBeginDate());
+            }
 
             return ocrResponseDTO;
 
