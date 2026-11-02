@@ -12,6 +12,7 @@ import ezstub_backend.repository.PayPeriodRepository;
 import ezstub_backend.repository.PaystubRepository;
 import ezstub_backend.repository.UserRepository;
 import ezstub_backend.service.PaystubService;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.parameters.P;
@@ -42,6 +43,7 @@ public class PaystubServiceImpl implements PaystubService {
     private PayPeriodRepository payPeriodRepository;
 
     @Override
+    @Transactional
     public PaystubOCRResponseDTO uploadPaystub(MultipartFile file, Long userId) throws Exception {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
@@ -112,8 +114,13 @@ public class PaystubServiceImpl implements PaystubService {
     }
 
     @Override
+    @Transactional()
     public List<PaystubDTO> getByUserId(Long userId) {
-        return List.of();
+        return paystubRepository.findByUser_UserId(userId).stream()
+                .map(paystub -> {
+                    PaystubDTO dto = modelMapper.map(paystub, PaystubDTO.class);
+                    return dto;
+                }).collect(Collectors.toList());
     }
 
     @Override
