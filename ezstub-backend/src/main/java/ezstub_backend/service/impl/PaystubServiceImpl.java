@@ -2,6 +2,8 @@ package ezstub_backend.service.impl;
 
 import ezstub_backend.client.PaystubClient;
 import ezstub_backend.exception.ResourceNotFoundException;
+import ezstub_backend.model.Deduction;
+import ezstub_backend.model.Earning;
 import ezstub_backend.payload.PaystubDTO;
 import ezstub_backend.payload.ocr.PaystubOCRResponseDTO;
 import ezstub_backend.model.Paystub;
@@ -23,6 +25,7 @@ import java.io.Reader;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PaystubServiceImpl implements PaystubService {
@@ -42,16 +45,12 @@ public class PaystubServiceImpl implements PaystubService {
     public PaystubOCRResponseDTO uploadPaystub(MultipartFile file, Long userId) throws Exception {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
-
         File tempFile = File.createTempFile("paystub-", ".pdf");
-
         try {
             file.transferTo(tempFile);
             String response = paystubClient.uploadPaystub(tempFile);
-
             ObjectMapper objectMapper = new ObjectMapper();
             PaystubOCRResponseDTO ocrResponseDTO = objectMapper.readValue(response, PaystubOCRResponseDTO.class);
-
 
             Paystub paystub = new Paystub();
             paystub.setEmployerName(ocrResponseDTO.getEmployerName());
@@ -69,6 +68,27 @@ public class PaystubServiceImpl implements PaystubService {
             paystub.setUploadedAt(java.time.LocalDateTime.now());
             paystub.setUser(user);
 
+            // Extract deductions
+            if (ocrResponseDTO.getDeductions() != null) {
+                List<Deduction> deductions = ocrResponseDTO.getDeductions().stream()
+                        .map(deductionDTO -> {
+                            Deduction d = modelMapper.map(deductionDTO, Deduction.class);
+                            d.setPaystub(paystub);
+                            return d;
+                        }).collect(Collectors.toList());
+                paystub.setDeductions(deductions);
+            }
+
+            if (ocrResponseDTO.getRateVariations() != null) {
+                List<Earning> earnings = ocrResponseDTO.getDeductions().stream()
+                        .map(earningDTO -> {
+                            Earning e = modelMapper.map(earningDTO, Earning.class);
+                            e.setPaystub(paystub);
+                            return e;
+                        }).collect(Collectors.toList());
+                paystub.setEarnings(earnings);
+            }
+
 
             // Bind to matching PayPeriod if it exists
             LocalDate beginDate = paystub.getPayBeginDate();
@@ -76,10 +96,10 @@ public class PaystubServiceImpl implements PaystubService {
                     .ifPresent(paystub::setPayPeriod);
             paystubRepository.save(paystub);
 
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
-            if (ocrResponseDTO.getPayBeginDate() != null) {
-                paystub.setPayBeginDate(ocrResponseDTO.getPayBeginDate());
-            }
+//            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+//            if (ocrResponseDTO.getPayBeginDate() != null) {
+//                paystub.setPayBeginDate(ocrResponseDTO.getPayBeginDate());
+//            }
 
             return ocrResponseDTO;
 
