@@ -1,4 +1,4 @@
-package ezstub_backend.payload;
+package ezstub_backend.payload.apiResponses;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

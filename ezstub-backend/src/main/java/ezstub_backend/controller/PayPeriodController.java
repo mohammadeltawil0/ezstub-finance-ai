@@ -1,7 +1,7 @@
 package ezstub_backend.controller;
 
 
-import ezstub_backend.payload.PayPeriodDTO;
+import ezstub_backend.payload.modelDTOs.PayPeriodDTO;
 import ezstub_backend.service.PayPeriodService;
 import ezstub_backend.util.AuthUtil;
 import jakarta.validation.Valid;

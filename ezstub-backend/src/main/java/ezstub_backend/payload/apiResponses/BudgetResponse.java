@@ -1,5 +1,6 @@
-package ezstub_backend.payload;
+package ezstub_backend.payload.apiResponses;
 
+import ezstub_backend.payload.modelDTOs.BudgetDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

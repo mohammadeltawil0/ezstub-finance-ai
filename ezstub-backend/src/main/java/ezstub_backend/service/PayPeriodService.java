@@ -1,6 +1,6 @@
 package ezstub_backend.service;
 
-import ezstub_backend.payload.PayPeriodDTO;
+import ezstub_backend.payload.modelDTOs.PayPeriodDTO;
 
 import java.util.List;
 

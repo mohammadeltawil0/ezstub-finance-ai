@@ -3,7 +3,7 @@ package ezstub_backend.service.impl;
 import ezstub_backend.exception.ResourceNotFoundException;
 import ezstub_backend.model.User;
 import ezstub_backend.model.WorkDay;
-import ezstub_backend.payload.WorkDayDTO;
+import ezstub_backend.payload.modelDTOs.WorkDayDTO;
 import ezstub_backend.repository.PayPeriodRepository;
 import ezstub_backend.repository.UserRepository;
 import ezstub_backend.repository.WorkDayRepository;

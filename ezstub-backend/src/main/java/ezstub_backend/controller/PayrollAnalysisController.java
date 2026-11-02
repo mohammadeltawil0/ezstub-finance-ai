@@ -1,6 +1,6 @@
 package ezstub_backend.controller;
 
-import ezstub_backend.payload.PayrollAnalysisDTO;
+import ezstub_backend.payload.modelDTOs.PayrollAnalysisDTO;
 import ezstub_backend.service.PayrollAnalysisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

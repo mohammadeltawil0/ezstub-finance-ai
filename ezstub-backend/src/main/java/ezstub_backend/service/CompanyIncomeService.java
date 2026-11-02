@@ -1,7 +1,7 @@
 package ezstub_backend.service;
 
 import ezstub_backend.model.CompanyIncome;
-import ezstub_backend.payload.CompanyIncomeDTO;
+import ezstub_backend.payload.modelDTOs.CompanyIncomeDTO;
 
 import java.util.List;
 

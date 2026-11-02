@@ -1,4 +1,4 @@
-package ezstub_backend.payload;
+package ezstub_backend.payload.modelDTOs;
 
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;

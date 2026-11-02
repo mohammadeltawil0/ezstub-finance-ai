@@ -1,14 +1,8 @@
 package ezstub_backend.service.impl;
 
 //import ezstub_backend.client.OCRClient;
-import ezstub_backend.payload.ReceiptDTO;
-import ezstub_backend.model.Receipt;
-import ezstub_backend.repository.ReceiptRepository;
-import ezstub_backend.repository.UserRepository;
 import ezstub_backend.service.ReceiptService;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class ReceiptServiceImpl implements ReceiptService {

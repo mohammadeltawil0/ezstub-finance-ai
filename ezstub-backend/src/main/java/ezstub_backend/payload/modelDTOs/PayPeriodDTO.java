@@ -1,6 +1,5 @@
-package ezstub_backend.payload;
+package ezstub_backend.payload.modelDTOs;
 
-import ezstub_backend.model.WorkDay;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

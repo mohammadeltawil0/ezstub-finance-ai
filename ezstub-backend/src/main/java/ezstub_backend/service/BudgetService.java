@@ -1,10 +1,8 @@
 package ezstub_backend.service;
 
 import ezstub_backend.model.User;
-import ezstub_backend.payload.BudgetDTO;
-import ezstub_backend.payload.BudgetResponse;
-
-import java.util.List;
+import ezstub_backend.payload.modelDTOs.BudgetDTO;
+import ezstub_backend.payload.apiResponses.BudgetResponse;
 
 public interface BudgetService {
 

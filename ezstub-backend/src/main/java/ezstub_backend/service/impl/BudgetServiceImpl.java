@@ -1,10 +1,10 @@
 package ezstub_backend.service.impl;
 
 import ezstub_backend.exception.APIException;
-import ezstub_backend.payload.BudgetDTO;
+import ezstub_backend.payload.modelDTOs.BudgetDTO;
 import ezstub_backend.model.Budget;
 import ezstub_backend.model.User;
-import ezstub_backend.payload.BudgetResponse;
+import ezstub_backend.payload.apiResponses.BudgetResponse;
 import ezstub_backend.repository.BudgetRepository;
 import ezstub_backend.repository.UserRepository;
 import ezstub_backend.service.BudgetService;
@@ -15,8 +15,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class BudgetServiceImpl implements BudgetService {

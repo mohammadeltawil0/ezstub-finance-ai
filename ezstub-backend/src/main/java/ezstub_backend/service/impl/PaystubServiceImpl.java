@@ -4,7 +4,7 @@ import ezstub_backend.client.PaystubClient;
 import ezstub_backend.exception.ResourceNotFoundException;
 import ezstub_backend.model.Deduction;
 import ezstub_backend.model.Earning;
-import ezstub_backend.payload.PaystubDTO;
+import ezstub_backend.payload.modelDTOs.PaystubDTO;
 import ezstub_backend.payload.ocr.PaystubOCRResponseDTO;
 import ezstub_backend.model.Paystub;
 import ezstub_backend.model.User;
@@ -15,16 +15,12 @@ import ezstub_backend.service.PaystubService;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.multipart.MultipartFile;
 import tools.jackson.databind.ObjectMapper;
 
 import java.io.File;
-import java.io.Reader;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -124,6 +120,7 @@ public class PaystubServiceImpl implements PaystubService {
     }
 
     @Override
+    @Transactional
     public PaystubDTO getById(Long id) {
         return null;
     }

@@ -1,6 +1,6 @@
 package ezstub_backend.service;
 
-import ezstub_backend.payload.WorkDayDTO;
+import ezstub_backend.payload.modelDTOs.WorkDayDTO;
 
 import java.math.BigDecimal;
 import java.util.List;

@@ -1,6 +1,6 @@
 package ezstub_backend.exception;
 
-import ezstub_backend.payload.APIResponse;
+import ezstub_backend.payload.apiResponses.APIResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;

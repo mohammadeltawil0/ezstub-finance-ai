@@ -1,6 +1,6 @@
 package ezstub_backend.controller;
 
-import ezstub_backend.payload.WorkDayDTO;
+import ezstub_backend.payload.modelDTOs.WorkDayDTO;
 import ezstub_backend.service.WorkDayService;
 import ezstub_backend.util.AuthUtil;
 import jakarta.validation.Valid;
