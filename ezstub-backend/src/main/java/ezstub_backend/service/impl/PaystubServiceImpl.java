@@ -110,7 +110,7 @@ public class PaystubServiceImpl implements PaystubService {
     }
 
     @Override
-    @Transactional()
+    @Transactional
     public List<PaystubDTO> getByUserId(Long userId) {
         return paystubRepository.findByUser_UserId(userId).stream()
                 .map(paystub -> {
@@ -122,12 +122,26 @@ public class PaystubServiceImpl implements PaystubService {
     @Override
     @Transactional
     public PaystubDTO getById(Long id) {
-        return null;
+        Paystub paystub = paystubRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Paystub", "paystubId", id));
+        PaystubDTO response = modelMapper.map(paystub, PaystubDTO.class);
+        response.setUserId(paystub.getUser().getUserId());
+        if (paystub.getPayPeriod() != null) {
+            response.setPayPeriodId(paystub.getPayPeriod().getPayPeriodId());
+        }
+        if (paystub.getUploadedAt() != null) {
+            response.setUploadedDate(paystub.getUploadedAt().toLocalDate());
+        }
+
+        return response;
     }
 
     @Override
+    @Transactional
     public PaystubDTO updatePaystub(Long id, PaystubDTO dto) {
-        return null;
+        Paystub existing = paystubRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Paystub", "paystubId", id));
+        existing.setEmployerName();
     }
 
     @Override
