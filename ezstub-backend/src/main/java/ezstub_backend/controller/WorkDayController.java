@@ -5,6 +5,8 @@ import ezstub_backend.payload.modelDTOs.WorkDayDTO;
 import ezstub_backend.service.WorkDayService;
 import ezstub_backend.util.AuthUtil;
 import jakarta.validation.Valid;
+import org.apache.coyote.Response;
+import org.hibernate.boot.registry.classloading.spi.ClassLoaderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +42,18 @@ public class WorkDayController {
     public ResponseEntity<WorkDayDTO> getWorkDayById(@PathVariable Long id) {
         WorkDayDTO response = workDayService.getById(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<WorkDayDTO> updateWorkDay(@PathVariable Long id, @Valid @RequestBody WorkDayDTO workDayDTO) {
+        WorkDayDTO response = workDayService.updateWorkDay(id, workDayDTO);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteWorkDay(@PathVariable Long id) {
+        workDayService.deleteWorkDay(id);
+        return ResponseEntity.noContent().build();
     }
 
 
