@@ -5,6 +5,7 @@ import ezstub_backend.payload.modelDTOs.PaystubDTO;
 import ezstub_backend.payload.ocr.PaystubOCRResponseDTO;
 import ezstub_backend.service.PaystubService;
 import ezstub_backend.util.AuthUtil;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -38,9 +39,21 @@ public class PaystubController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     @GetMapping("/{id}")
-    public ResponseEntity<PaystubDTO> getPayStubById(@PathVariable Long id) {
+    public ResponseEntity<PaystubDTO> getPaystubById(@PathVariable Long id) {
         PaystubDTO response = paystubService.getById(id);
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<PaystubDTO> updatePaystub(@PathVariable Long id, @Valid @RequestBody PaystubDTO dto) {
+        PaystubDTO response = paystubService.updatePaystub(id, dto);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletedPaystub(@PathVariable Long id) {
+        paystubService.deletePaystub(id);
+        return ResponseEntity.noContent().build();
     }
 
 
