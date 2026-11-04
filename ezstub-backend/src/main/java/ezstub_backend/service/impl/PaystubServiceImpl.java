@@ -141,7 +141,35 @@ public class PaystubServiceImpl implements PaystubService {
     public PaystubDTO updatePaystub(Long id, PaystubDTO dto) {
         Paystub existing = paystubRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Paystub", "paystubId", id));
-        existing.setEmployerName();
+        existing.setEmployerName(dto.getEmployerName());
+        existing.setEmployerLocation(dto.getEmployerLocation());
+        existing.setPayBeginDate(dto.getPayBeginDate());
+        existing.setPayEndDate(dto.getPayEndDate());
+        existing.setCheckDate(dto.getCheckDate());
+        existing.setBaseHourlyRate(dto.getBaseHourlyRate());
+        existing.setTotalHoursWorked(dto.getTotalHoursWorked());
+        existing.setCurrentGross(dto.getCurrentGross());
+        existing.setYtdGross(dto.getYtdGross());
+        existing.setCurrentNet(dto.getCurrentNet());
+        existing.setYtdNet(dto.getYtdNet());
+        if (dto.getVerified() != null) {
+            existing.setVerified(dto.getVerified());
+        }
+
+        Paystub saved = paystubRepository.save(existing);
+        PaystubDTO response = modelMapper.map(saved, PaystubDTO.class);
+        response.setUserId(saved.getUser().getUserId());
+        if (saved.getPayPeriod() != null) {
+            response.setPayPeriodId(saved.getPayPeriod().getPayPeriodId());
+        }
+        if (saved.getUploadedAt() != null) {
+            response.setUploadedDate(saved.getUploadedAt().toLocalDate());
+        }
+        return response;
+
+
+
+
     }
 
     @Override
