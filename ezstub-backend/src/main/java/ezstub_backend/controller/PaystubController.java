@@ -1,6 +1,7 @@
 package ezstub_backend.controller;
 
 import ezstub_backend.model.User;
+import ezstub_backend.payload.modelDTOs.PaystubDTO;
 import ezstub_backend.payload.ocr.PaystubOCRResponseDTO;
 import ezstub_backend.service.PaystubService;
 import ezstub_backend.util.AuthUtil;
@@ -10,6 +11,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/paystubs")
@@ -28,6 +31,12 @@ public class PaystubController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+    @GetMapping
+    public ResponseEntity<List<PaystubDTO>> getMyPaystubs() {
+        Long userId = authUtil.loggedInUserId();
+        List<PaystubDTO> response = paystubService.getByUserId(userId);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 //    @GetMapping("/{id}")
 //    public PaystubDTO getPayStubById(@RequestParam)
 
