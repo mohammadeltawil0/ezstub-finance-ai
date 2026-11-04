@@ -166,10 +166,6 @@ public class PaystubServiceImpl implements PaystubService {
             response.setUploadedDate(saved.getUploadedAt().toLocalDate());
         }
         return response;
-
-
-
-
     }
 
     @Override
