@@ -37,7 +37,13 @@ public class PaystubController {
         List<PaystubDTO> response = paystubService.getByUserId(userId);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
-//    @GetMapping("/{id}")
-//    public PaystubDTO getPayStubById(@RequestParam)
+    @GetMapping("/{id}")
+    public ResponseEntity<PaystubDTO> getPayStubById(@PathVariable Long id) {
+        PaystubDTO response = paystubService.getById(id);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+
+
 
 }
