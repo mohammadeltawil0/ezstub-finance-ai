@@ -174,6 +174,8 @@ public class PaystubServiceImpl implements PaystubService {
 
     @Override
     public void deletePaystub(Long id) {
-
+        Paystub paystub = paystubRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Paystub", "paystubId", id));
+        paystubRepository.delete(paystub);
     }
 }
