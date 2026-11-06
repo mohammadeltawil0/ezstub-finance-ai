@@ -79,7 +79,9 @@ public class ReceiptServiceImpl implements ReceiptService {
 
     @Override
     public void deleteReceipt(Long id) {
-
+        Receipt receipt = receiptRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Receipt", "receiptId", id));
+        receiptRepository.delete(receipt);
     }
 
 //    private final ReceiptRepository receiptRepository;
