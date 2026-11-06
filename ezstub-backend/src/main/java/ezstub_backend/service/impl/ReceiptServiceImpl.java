@@ -8,12 +8,14 @@ import ezstub_backend.payload.modelDTOs.ReceiptDTO;
 import ezstub_backend.repository.ReceiptRepository;
 import ezstub_backend.repository.UserRepository;
 import ezstub_backend.service.ReceiptService;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ReceiptServiceImpl implements ReceiptService {
@@ -26,6 +28,7 @@ public class ReceiptServiceImpl implements ReceiptService {
     private ModelMapper modelMapper;
 
     @Override
+    @Transactional
     public ReceiptDTO uploadReceipt(ReceiptDTO dto, Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
@@ -40,8 +43,15 @@ public class ReceiptServiceImpl implements ReceiptService {
     }
 
     @Override
+    @Transactional
     public List<ReceiptDTO> getReceiptByUser(Long userId) {
-        return List.of();
+        return receiptRepository.findByUser_UserId(userId).stream()
+                .map(receipt -> {
+                    ReceiptDTO dto = modelMapper.map(receipt, ReceiptDTO.class);
+                    dto.setUserId(receipt.getUser().getUserId());
+                    return dto;
+                })
+                .collect(Collectors.toList());
     }
 
     @Override
