@@ -16,6 +16,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class BudgetServiceImpl implements BudgetService {
 
@@ -77,6 +79,31 @@ public class BudgetServiceImpl implements BudgetService {
                 budgetPage.getTotalPages(),
                 budgetPage.isLast()
         );
+    }
+
+    @Override
+    public List<BudgetDTO> getBudgetsByUser(Long userId) {
+        return List.of();
+    }
+
+    @Override
+    public List<BudgetDTO> getBudgetsByUserAndMonth(Long userId, String month) {
+        return List.of();
+    }
+
+    @Override
+    public BudgetDTO getBudgetById(Long id) {
+        return null;
+    }
+
+    @Override
+    public BudgetDTO updateBudget(Long id, BudgetDTO dto) {
+        return null;
+    }
+
+    @Override
+    public void deleteBudget(Long id) {
+
     }
 
 
