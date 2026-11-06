@@ -1,11 +1,63 @@
 package ezstub_backend.service.impl;
 
 //import ezstub_backend.client.OCRClient;
+import ezstub_backend.exception.ResourceNotFoundException;
+import ezstub_backend.model.Receipt;
+import ezstub_backend.model.User;
+import ezstub_backend.payload.modelDTOs.ReceiptDTO;
+import ezstub_backend.repository.ReceiptRepository;
+import ezstub_backend.repository.UserRepository;
 import ezstub_backend.service.ReceiptService;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @Service
 public class ReceiptServiceImpl implements ReceiptService {
+
+    @Autowired
+    private ReceiptRepository receiptRepository;
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private ModelMapper modelMapper;
+
+    @Override
+    public ReceiptDTO uploadReceipt(ReceiptDTO dto, Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "userId", userId));
+        Receipt receipt = modelMapper.map(dto, Receipt.class);
+        receipt.setUser(user);
+        receipt.setProcessed(dto.getProcessed() != null ? dto.getProcessed() : true);
+        Receipt saved = receiptRepository.save(receipt);
+        ReceiptDTO response = modelMapper.map(receipt, ReceiptDTO.class);
+        dto.setUserId(receipt.getUser().getUserId());
+        return response;
+
+    }
+
+    @Override
+    public List<ReceiptDTO> getReceiptByUser(Long userId) {
+        return List.of();
+    }
+
+    @Override
+    public ReceiptDTO getReceiptById(Long id) {
+        return null;
+    }
+
+    @Override
+    public ReceiptDTO updateReceipt(Long id, ReceiptDTO dto) {
+        return null;
+    }
+
+    @Override
+    public void deleteReceipt(Long id) {
+
+    }
 
 //    private final ReceiptRepository receiptRepository;
 //    private final UserRepository userRepository;
@@ -69,25 +121,5 @@ public class ReceiptServiceImpl implements ReceiptService {
 ////            throw new RuntimeException("Failed to upload receipt!");
 ////        }
 ////    }
-//
-//    @Override
-//    public List<ReceiptDTO> getReceiptByUser(Long userId) {
-//
-//        return receiptRepository.findByUserId(userId)
-//                .stream()
-//                .map(ReceiptMapper::toDTO)
-//                .toList();
-//    }
-//
-//    @Override
-//    public ReceiptDTO getReceiptById(Long id) {
-//
-//        Receipt receipt = receiptRepository.findById(id).orElseThrow(() -> new RuntimeException("Receipt not found!"));
-//        return ReceiptMapper.toDTO(receipt);
-//    }
-//
-//    @Override
-//    public void deleteReceipt(Long id) {
-//        receiptRepository.deleteById(id);
-//    }
+
 }
