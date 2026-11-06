@@ -56,7 +56,10 @@ public class ReceiptServiceImpl implements ReceiptService {
 
     @Override
     public ReceiptDTO getReceiptById(Long id) {
-        return null;
+        Receipt receipt = receiptRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Receipt", "receiptId", id));
+        ReceiptDTO response = modelMapper.map(receipt, ReceiptDTO.class);
+        return response;
     }
 
     @Override
