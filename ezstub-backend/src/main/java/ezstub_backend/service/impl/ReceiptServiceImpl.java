@@ -64,7 +64,17 @@ public class ReceiptServiceImpl implements ReceiptService {
 
     @Override
     public ReceiptDTO updateReceipt(Long id, ReceiptDTO dto) {
-        return null;
+        Receipt existing = receiptRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Receipt", "receiptId", id));
+        existing.setImageUrl(dto.getImageUrl());
+        existing.setMerchant(dto.getMerchant());
+        existing.setTotalAmount(dto.getTotalAmount());
+        existing.setParsedJson(dto.getParsedJson());
+        existing.setProcessed(dto.getProcessed());
+
+        Receipt saved = receiptRepository.save(existing);
+        ReceiptDTO response = modelMapper.map(saved, ReceiptDTO.class);
+        return response;
     }
 
     @Override
