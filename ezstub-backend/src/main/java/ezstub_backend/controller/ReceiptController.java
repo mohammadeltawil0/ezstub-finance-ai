@@ -21,10 +21,6 @@ public class ReceiptController {
     @Autowired
     private AuthUtil authUtil;
 
-
-
-
-
     @PostMapping()
     public ResponseEntity<ReceiptDTO> uploadReceipt(@Valid @RequestBody ReceiptDTO receiptDTO) {
         Long userId = authUtil.loggedInUserId();
@@ -40,12 +36,14 @@ public class ReceiptController {
     }
 
     @GetMapping("/{id}")
-    public ReceiptDTO getReceipt(@PathVariable Long id) {
-        return receiptService.getReceiptById(id);
+    public ResponseEntity<ReceiptDTO> getReceipt(@PathVariable Long id) {
+        ReceiptDTO response = receiptService.getReceiptById(id);
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteReceipt(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteReceipt(@PathVariable Long id) {
         receiptService.deleteReceipt(id);
+        return ResponseEntity.noContent().build();
     }
 }
