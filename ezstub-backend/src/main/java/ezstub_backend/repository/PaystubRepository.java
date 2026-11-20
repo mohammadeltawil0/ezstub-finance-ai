@@ -1,6 +1,8 @@
 package ezstub_backend.repository;
 
 import ezstub_backend.model.Paystub;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -9,6 +11,6 @@ import java.util.List;
 @Repository
 public interface PaystubRepository extends JpaRepository<Paystub, Long> {
 
-    List<Paystub> findByUser_UserId(Long userId);
-    List<Paystub> findByEmployerName(String employerName);
+    Page<Paystub> findByUser_UserId(Long userId, Pageable pageable);
+    Page<Paystub> findByEmployerName(String employerName, Pageable pageable);
 }
