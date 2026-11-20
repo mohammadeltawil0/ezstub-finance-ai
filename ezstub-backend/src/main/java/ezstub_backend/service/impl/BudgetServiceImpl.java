@@ -8,6 +8,7 @@ import ezstub_backend.payload.apiResponses.BudgetResponse;
 import ezstub_backend.repository.BudgetRepository;
 import ezstub_backend.repository.UserRepository;
 import ezstub_backend.service.BudgetService;
+import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -29,6 +30,7 @@ public class BudgetServiceImpl implements BudgetService {
     ModelMapper modelMapper;
 
     @Override
+    @Transactional
     public BudgetDTO createBudget(BudgetDTO budgetDTO, User user) {
 
         // check if the user already has a budget for this category and month
@@ -40,7 +42,7 @@ public class BudgetServiceImpl implements BudgetService {
                 );
 
         if (budgetExists) {
-            throw new APIException("A budget already exists for this category and month");
+            throw new APIException("A budget already exists for this category and month!");
         }
 
         Budget budget = modelMapper.map(budgetDTO, Budget.class);
@@ -52,16 +54,13 @@ public class BudgetServiceImpl implements BudgetService {
     }
 
     @Override
+    @Transactional
     public BudgetResponse getAllBudgets(User user, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
-
         Sort sort = sortOrder.equalsIgnoreCase("asc")
                 ? Sort.by(sortBy).ascending()
                 : Sort.by(sortBy).descending();
-
         Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
-
         Page<Budget> budgetPage = budgetRepository.findByUser_UserId(user.getUserId(), pageable);
-
         var budgetDTOs = budgetPage.getContent()
                 .stream()
                 .map(budget -> {
@@ -70,7 +69,6 @@ public class BudgetServiceImpl implements BudgetService {
                     return dto;
                 })
                 .toList();
-
         return new BudgetResponse(
                 budgetDTOs,
                 budgetPage.getNumber(),
