@@ -1,8 +1,8 @@
 package ezstub_backend.service;
 
 import ezstub_backend.model.User;
+import ezstub_backend.payload.apiResponses.PageResponse;
 import ezstub_backend.payload.modelDTOs.BudgetDTO;
-import ezstub_backend.payload.apiResponses.BudgetResponse;
 
 import java.util.List;
 
@@ -10,7 +10,7 @@ public interface BudgetService {
 
     BudgetDTO createBudget(BudgetDTO budgetDTO, User user);
 
-    BudgetResponse getAllBudgets(User user, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
+    PageResponse<BudgetDTO> getAllBudgets(User user, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
 
     List<BudgetDTO> getBudgetsByUser(Long userId);
 
