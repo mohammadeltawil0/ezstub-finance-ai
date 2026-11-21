@@ -4,6 +4,7 @@ package ezstub_backend.service.impl;
 import ezstub_backend.exception.ResourceNotFoundException;
 import ezstub_backend.model.Receipt;
 import ezstub_backend.model.User;
+import ezstub_backend.payload.apiResponses.PageResponse;
 import ezstub_backend.payload.modelDTOs.ReceiptDTO;
 import ezstub_backend.repository.ReceiptRepository;
 import ezstub_backend.repository.UserRepository;
@@ -11,6 +12,10 @@ import ezstub_backend.service.ReceiptService;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -44,14 +49,28 @@ public class ReceiptServiceImpl implements ReceiptService {
 
     @Override
     @Transactional
-    public List<ReceiptDTO> getReceiptByUser(Long userId) {
-        return receiptRepository.findByUser_UserId(userId).stream()
-                .map(receipt -> {
-                    ReceiptDTO dto = modelMapper.map(receipt, ReceiptDTO.class);
-                    dto.setUserId(receipt.getUser().getUserId());
-                    return dto;
-                })
-                .collect(Collectors.toList());
+    public PageResponse<ReceiptDTO> getReceiptByUser(Long userId, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
+        Sort sort = sortOrder.equalsIgnoreCase("asc")
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+
+        Page<Receipt> page = receiptRepository.findByUser_UserId(userId, pageable);
+        List<ReceiptDTO> dtos = page.getContent().stream()
+            .map(receipt -> {
+                ReceiptDTO dto = modelMapper.map(receipt, ReceiptDTO.class);
+                dto.setUserId(receipt.getUser().getUserId());
+                return dto;
+            })
+            .collect(Collectors.toList());
+        return PageResponse.<ReceiptDTO>builder()
+                .content(dtos)
+                .pageNumber(page.getNumber())
+                .pageSize(page.getSize())
+                .totalElements(page.getTotalElements())
+                .totalPages(page.getTotalPages())
+                .lastPage(page.isLast())
+                .build();
     }
 
     @Override

@@ -1,5 +1,7 @@
 package ezstub_backend.controller;
 
+import ezstub_backend.config.AppConstants;
+import ezstub_backend.payload.apiResponses.PageResponse;
 import ezstub_backend.payload.modelDTOs.ReceiptDTO;
 import ezstub_backend.service.ReceiptService;
 import ezstub_backend.util.AuthUtil;
@@ -29,9 +31,14 @@ public class ReceiptController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<ReceiptDTO>> getReceipts() {
+    public ResponseEntity<PageResponse<ReceiptDTO>> getReceipts(
+            @RequestParam(name = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER) Integer pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = AppConstants.PAGE_SIZE) Integer pageSize,
+            @RequestParam(name = "sortBy", defaultValue = AppConstants.SORT_RECEIPTS_BY, required = false) String sortBy,
+            @RequestParam(name = "sortOrder", defaultValue = AppConstants.SORT_DIRECTION, required = false) String sortOrder
+    ) {
         Long userId = authUtil.loggedInUserId();
-        List<ReceiptDTO> response = receiptService.getReceiptByUser(userId);
+        PageResponse<ReceiptDTO> response = receiptService.getReceiptByUser(userId, pageNumber, pageSize, sortBy, sortOrder);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

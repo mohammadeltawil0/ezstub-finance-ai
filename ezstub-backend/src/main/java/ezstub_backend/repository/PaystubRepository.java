@@ -12,5 +12,6 @@ import java.util.List;
 public interface PaystubRepository extends JpaRepository<Paystub, Long> {
 
     Page<Paystub> findByUser_UserId(Long userId, Pageable pageable);
+    List<Paystub> findByUser_UserId(Long userId);
     Page<Paystub> findByEmployerName(String employerName, Pageable pageable);
 }

@@ -1,12 +1,15 @@
 package ezstub_backend.controller;
 
+import ezstub_backend.config.AppConstants;
 import ezstub_backend.model.User;
+import ezstub_backend.payload.apiResponses.PageResponse;
 import ezstub_backend.payload.modelDTOs.PaystubDTO;
 import ezstub_backend.payload.ocr.PaystubOCRResponseDTO;
 import ezstub_backend.service.PaystubService;
 import ezstub_backend.util.AuthUtil;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -33,9 +36,14 @@ public class PaystubController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PaystubDTO>> getMyPaystubs() {
+    public ResponseEntity<PageResponse<PaystubDTO>> getMyPaystubs(
+            @RequestParam(name = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
+            @RequestParam(name = "sortBy", defaultValue = AppConstants.SORT_PAYSTUBS_BY, required = false) String sortBy,
+            @RequestParam(name = "sortOrder", defaultValue = AppConstants.SORT_DIRECTION, required = false) String sortOrder
+    ) {
         Long userId = authUtil.loggedInUserId();
-        List<PaystubDTO> response = paystubService.getByUserId(userId);
+        PageResponse<PaystubDTO> response = paystubService.getByUserId(userId, pageNumber, pageSize, sortBy, sortOrder);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
     @GetMapping("/{id}")

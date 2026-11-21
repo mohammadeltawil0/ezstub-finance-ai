@@ -1,6 +1,8 @@
 package ezstub_backend.controller;
 
+import ezstub_backend.config.AppConstants;
 import ezstub_backend.model.WorkDay;
+import ezstub_backend.payload.apiResponses.PageResponse;
 import ezstub_backend.payload.modelDTOs.WorkDayDTO;
 import ezstub_backend.service.WorkDayService;
 import ezstub_backend.util.AuthUtil;
@@ -32,9 +34,14 @@ public class WorkDayController {
     }
 
     @GetMapping
-    public ResponseEntity<List<WorkDayDTO>> getMyWorkDays() {
+    public ResponseEntity<PageResponse<WorkDayDTO>> getMyWorkDays(
+            @RequestParam(name = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
+            @RequestParam(name = "pageSize", defaultValue = AppConstants.PAGE_SIZE, required = false) Integer pageSize,
+            @RequestParam(name = "sortBy", defaultValue = AppConstants.SORT_WORKDAYS_BY, required = false) String sortBy,
+            @RequestParam(name = "sortOrder", defaultValue = AppConstants.SORT_DIRECTION, required = false) String sortOrder
+    ) {
         Long userId = authUtil.loggedInUserId();
-        List<WorkDayDTO> response = workDayService.getByUserId(userId);
+        PageResponse<WorkDayDTO> response = workDayService.getByUserId(userId, pageNumber, pageSize, sortBy, sortOrder);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

@@ -3,6 +3,7 @@ package ezstub_backend.service.impl;
 import ezstub_backend.exception.ResourceNotFoundException;
 import ezstub_backend.model.User;
 import ezstub_backend.model.WorkDay;
+import ezstub_backend.payload.apiResponses.PageResponse;
 import ezstub_backend.payload.modelDTOs.WorkDayDTO;
 import ezstub_backend.repository.PayPeriodRepository;
 import ezstub_backend.repository.UserRepository;
@@ -10,6 +11,10 @@ import ezstub_backend.repository.WorkDayRepository;
 import ezstub_backend.service.WorkDayService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.math.RoundingMode;
@@ -63,15 +68,33 @@ public class WorkDayServiceImpl implements WorkDayService {
     }
 
     @Override
-    public List<WorkDayDTO> getByUserId(Long userId) {
-        return workDayRepository
-                .findByUser_UserId(userId)
-                .stream()
-                .map(workDay -> {
-                    WorkDayDTO dto = modelMapper.map(workDay, WorkDayDTO.class);
-                    dto.setUserId(userId);
-                    return dto;
-                }).toList();
+    public PageResponse<WorkDayDTO> getByUserId(Long userId, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
+
+        Sort sort = sortOrder.equalsIgnoreCase("asc")
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+
+        Page<WorkDay> page = workDayRepository.findByUser_UserId(userId, pageable);
+
+        List<WorkDayDTO> dtos = page.getContent().stream()
+            .map(workDay -> {
+                WorkDayDTO dto = modelMapper.map(workDay, WorkDayDTO.class);
+                dto.setUserId(userId);
+                if (workDay.getPayPeriod() != null) {
+                    dto.setPayPeriodId(workDay.getPayPeriod().getPayPeriodId());
+                }
+                return dto;
+            }).toList();
+
+        return PageResponse.<WorkDayDTO>builder()
+                .content(dtos)
+                .pageNumber(page.getNumber())
+                .pageSize(page.getSize())
+                .totalElements(page.getTotalElements())
+                .totalPages(page.getTotalPages())
+                .lastPage(page.isLast())
+                .build();
     }
 
     @Override

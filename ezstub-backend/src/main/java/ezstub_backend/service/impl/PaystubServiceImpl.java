@@ -4,6 +4,7 @@ import ezstub_backend.client.PaystubClient;
 import ezstub_backend.exception.ResourceNotFoundException;
 import ezstub_backend.model.Deduction;
 import ezstub_backend.model.Earning;
+import ezstub_backend.payload.apiResponses.PageResponse;
 import ezstub_backend.payload.modelDTOs.PaystubDTO;
 import ezstub_backend.payload.ocr.PaystubOCRResponseDTO;
 import ezstub_backend.model.Paystub;
@@ -15,6 +16,10 @@ import ezstub_backend.service.PaystubService;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import tools.jackson.databind.ObjectMapper;
@@ -111,12 +116,28 @@ public class PaystubServiceImpl implements PaystubService {
 
     @Override
     @Transactional
-    public List<PaystubDTO> getByUserId(Long userId) {
-        return paystubRepository.findByUser_UserId(userId).stream()
+    public PageResponse<PaystubDTO> getByUserId(Long userId, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
+
+        Sort sort = sortOrder.equalsIgnoreCase("asc")
+                ? Sort.by(sortBy).ascending()
+                : Sort.by(sortBy).descending();
+        Pageable pageable = PageRequest.of(pageNumber, pageSize, sort);
+
+        Page<Paystub> page = paystubRepository.findByUser_UserId(userId, pageable);
+        List<PaystubDTO> dtos = page.getContent().stream()
                 .map(paystub -> {
                     PaystubDTO dto = modelMapper.map(paystub, PaystubDTO.class);
                     return dto;
                 }).collect(Collectors.toList());
+
+        return PageResponse.<PaystubDTO>builder()
+                .content(dtos)
+                .pageNumber(page.getNumber())
+                .pageSize(page.getSize())
+                .totalElements(page.getTotalElements())
+                .totalPages(page.getTotalPages())
+                .lastPage(page.isLast())
+                .build();
     }
 
     @Override

@@ -1,5 +1,6 @@
 package ezstub_backend.service;
 
+import ezstub_backend.payload.apiResponses.PageResponse;
 import ezstub_backend.payload.modelDTOs.WorkDayDTO;
 
 import java.math.BigDecimal;
@@ -9,7 +10,7 @@ public interface WorkDayService {
 
     WorkDayDTO createWorkDay(WorkDayDTO dto, Long userId);
 
-    List<WorkDayDTO> getByUserId(Long userId);
+    PageResponse<WorkDayDTO> getByUserId(Long userId, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder);
 
     WorkDayDTO getById(Long id);
 

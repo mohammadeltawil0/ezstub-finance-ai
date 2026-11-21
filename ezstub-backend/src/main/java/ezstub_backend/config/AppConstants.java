@@ -7,7 +7,7 @@ public class AppConstants {
     public static final String SORT_RECEIPTS_BY = "receiptId";
     public static final String SORT_BUDGETS_BY = "budgetId";
     public static final String SORT_WORKDAYS_BY = "workDayId";
-    public static final String SORT_COMPANY_INCOME_BY = "companyName"
+    public static final String SORT_COMPANY_INCOME_BY = "companyName";
     public static final String SORT_DIRECTION = "asc";
 
 }

@@ -2,19 +2,18 @@ package ezstub_backend.service.impl;
 
 import ezstub_backend.model.CompanyIncome;
 import ezstub_backend.model.Paystub;
+import ezstub_backend.payload.apiResponses.PageResponse;
 import ezstub_backend.payload.modelDTOs.CompanyIncomeDTO;
 import ezstub_backend.repository.PaystubRepository;
 import jakarta.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,13 +27,64 @@ public class CompanyIncomeService implements ezstub_backend.service.CompanyIncom
 
     @Override
     @Transactional
-    public List<CompanyIncome> getCompanyIncome(Long userId) {
+    public PageResponse<CompanyIncomeDTO> getCompanyIncome(Long userId, Integer pageNumber, Integer pageSize, String sortBy, String sortOrder) {
+
+        List<CompanyIncomeDTO> allItems = buildCompanyIncomeList(userId);
+
+        Comparator<CompanyIncomeDTO> comparator = switch (sortBy) {
+            case "totalEarnedFromCompany" -> Comparator.comparing(CompanyIncomeDTO::getTotalEarnedFromCompany, Comparator.nullsLast(Comparator.naturalOrder()));
+            case "hoursWorkedAtCompany" -> Comparator.comparing(CompanyIncomeDTO::getHoursWorkedAtCompany, Comparator.nullsLast(Comparator.naturalOrder()));
+            case "paystubCount" -> Comparator.comparing(CompanyIncomeDTO::getPaystubCount, Comparator.nullsLast(Comparator.naturalOrder()));
+            default -> Comparator.comparing(CompanyIncomeDTO::getCompanyName, Comparator.nullsLast(String.CASE_INSENSITIVE_ORDER));
+        };
+        if ("desc".equalsIgnoreCase(sortOrder)) {
+            comparator = comparator.reversed();
+        }
+        allItems.sort(comparator);
+
+        int totalElements = allItems.size();
+        int safeSize = Math.max(1, pageSize);
+        int totalPages = (int) Math.ceil((double) totalElements / safeSize);
+        int fromIndex = Math.min(pageNumber + safeSize, totalElements);
+        int toIndex = Math.min(fromIndex + safeSize, totalElements);
+        List<CompanyIncomeDTO> pageContent = allItems.subList(fromIndex, toIndex);
+
+        return PageResponse.<CompanyIncomeDTO>builder()
+                .content(pageContent)
+                .pageNumber(pageNumber)
+                .pageSize(pageSize)
+                .totalElements((long) totalElements)
+                .totalPages(totalPages)
+                .lastPage(pageNumber >= totalPages - 1 || totalElements == 0)
+                .build();
+    }
+
+
+    @Override
+    @Transactional
+    public CompanyIncomeDTO getCompanyIncome(Long userId, String companyName) {
+        return buildCompanyIncomeList(userId).stream()
+                .filter(ci -> ci.getCompanyName() != null && ci.getCompanyName().equalsIgnoreCase(companyName))
+                .findFirst()
+                .orElseGet(() -> CompanyIncomeDTO.builder()
+                        .companyName(companyName)
+                        .totalEarnedFromCompany(BigDecimal.ZERO)
+                        .totalDeductionsFromCompany(BigDecimal.ZERO)
+                        .hoursWorkedAtCompany(BigDecimal.ZERO)
+                        .dateStarted(null)
+                        .dateEnded(null)
+                        .paystubCount(0)
+                        .build());
+    }
+
+    private List<CompanyIncomeDTO> buildCompanyIncomeList(Long userId) {
 
         List<Paystub> paystubs = paystubRepository.findByUser_UserId(userId);
         Map<String, List<Paystub>> groupedPaystubs = paystubs.stream()
+                .filter(p -> p.getEmployerName() != null)
                 .collect(Collectors.groupingBy(Paystub::getEmployerName));
-        List<CompanyIncome> results = new ArrayList<>();
-        long idCounter = 1L;
+
+        List<CompanyIncomeDTO> allItems = new ArrayList<>();
 
         for (Map.Entry<String, List<Paystub>> entry : groupedPaystubs.entrySet()) {
             String company = entry.getKey();
@@ -56,29 +106,18 @@ public class CompanyIncomeService implements ezstub_backend.service.CompanyIncom
             LocalDate startDate = stubs.stream().map(Paystub::getPayBeginDate).filter(Objects::nonNull).min(LocalDate::compareTo).orElse(null);
             LocalDate endDate = stubs.stream().map(Paystub::getPayEndDate).filter(Objects::nonNull).max(LocalDate::compareTo).orElse(null);
 
-            CompanyIncome ci = new CompanyIncome(
-                    idCounter++,
-                    company,
-                    totalEarned,
-                    totalDeductions,
-                    totalHours,
-                    startDate,
-                    endDate,
-                    stubs.size()
+            allItems.add(CompanyIncomeDTO.builder()
+                    .companyName(company)
+                    .totalEarnedFromCompany(totalEarned)
+                    .totalDeductionsFromCompany(totalDeductions)
+                    .hoursWorkedAtCompany(totalHours)
+                    .dateStarted(startDate)
+                    .dateEnded(endDate)
+                    .paystubCount(stubs.size())
+                    .build()
             );
-            results.add(ci);
-        }
-        return results;
-    }
 
-    @Override
-    @Transactional
-    public CompanyIncomeDTO getCompanyIncome(Long userId, String companyName) {
-        List<CompanyIncome> list = getCompanyIncome(userId);
-        CompanyIncome match = list.stream()
-                .filter(ci -> ci.getCompanyName().equalsIgnoreCase(companyName))
-                .findFirst()
-                .orElseGet(() -> new CompanyIncome(null, companyName, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, null, null, 0));
-        return modelMapper.map(match, CompanyIncomeDTO.class);
+        }
+        return allItems;
     }
 }
